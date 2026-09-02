@@ -28,8 +28,8 @@ SECRET_KEY =\
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','https://theianext-1-labs-prod-misc-tools-us-east-0.labs.cognitiveclass.ai:8000']
-CSRF_TRUSTED_ORIGINS = ['https://theianext-1-labs-prod-misc-tools-us-east-0.labs.cognitiveclass.ai:8000']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.cognitiveclass.ai', '*']
+CSRF_TRUSTED_ORIGINS = ['https://theianext-1-labs-prod-misc-tools-us-east-0.labs.cognitiveclass.ai:8000', 'https://sonjagrund-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
