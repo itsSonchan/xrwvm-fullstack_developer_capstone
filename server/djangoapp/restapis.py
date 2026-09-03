@@ -19,7 +19,7 @@ def get_request(endpoint, **kwargs):
             params = params.rstrip("&")
     request_url = backend_url+endpoint+"?"+params
 
-    print ("GET from {} ".from(request_url))
+    print ("GET from {} ".format(request_url))
     try:
         response=requests.get(request_url)
         return response.json()
