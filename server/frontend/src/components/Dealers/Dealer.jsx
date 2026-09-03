@@ -68,13 +68,13 @@ const Dealer = () => {
 
 
 return(
-  <div style={{margin:"20px"}}>
+  <div >
       <Header/>
-      <div style={{marginTop:"10px"}}>
+      <div style={{marginTop:"10px", marginLeft:"20px"}}>
       <h1 style={{color:"grey"}}>{dealer.full_name}{postReview}</h1>
       <h4  style={{color:"grey"}}>{dealer['city']},{dealer['address']}, Zip - {dealer['zip']}, {dealer['state']} </h4>
       </div>
-      <div class="reviews_panel">
+      <div class="reviews_panel" style={{marginLeft:"20px"}}>
       {reviews.length === 0 && unreviewed === false ? (
         <text>Loading Reviews....</text>
       ):  unreviewed === true? <div>No reviews yet! </div> :
