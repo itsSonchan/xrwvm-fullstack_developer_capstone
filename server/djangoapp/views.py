@@ -1,6 +1,5 @@
 # Uncomment the required imports before adding the code
 
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from .models import CarMake, CarModel
@@ -11,7 +10,7 @@ import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
-from .restapis import get_request, analyze_review_sentiments, post_review
+from .restapis import get_request, analyze_review_sentiments
 
 
 # Get an instance of a logger
@@ -55,7 +54,6 @@ def logout_request(request):
 # Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
-	# Load JSON data from the request body
     data = json.loads(request.body)
     username = data['userName']
     password = data['password']
@@ -77,7 +75,7 @@ def registration(request):
         login(request, user)
         data = {"userName":username,"status":"Authenticated"}
         return JsonResponse(data)
-    else :
+    else:
         data = {"userName":username,"error":"Already Registered"}
         return JsonResponse(data)
 
@@ -88,7 +86,7 @@ def get_dealers(request, state="All"):
     if (state == "All"):
         endpoint = "/fetchDealers"
     else:
-        endpoint = "/fetchDealers/"+state
+        endpoint = "/fetchDealers/" + state
     dealerships = get_request(endpoint)
     return JsonResponse({"status":200,"dealers":dealerships})
 
@@ -120,7 +118,6 @@ def get_dealer_details(request, dealer_id):
 # Create a `add_review` view to submit a review
 def add_review(request):
     if (request.user.is_anonymous is False):
-        data = json.loads(request.body)
         try:
             return JsonResponse({"status":200})
         except Exception as e:
