@@ -1,4 +1,4 @@
-// Core JavaScript helper functions
+// Core JavaScript helper functions;
 'use strict';
 
 // quickElement(tagType, parentReference [, textInChildNode, attribute, attributeValue ...]);
@@ -16,7 +16,7 @@ function quickElement() {
     return obj;
 }
 
-// "a" is reference to an object
+// "a" is reference to an object;
 function removeChildren(a) {
     while (a.hasChildNodes()) {
         a.removeChild(a.lastChild);
@@ -24,8 +24,8 @@ function removeChildren(a) {
 }
 
 // ----------------------------------------------------------------------------
-// Find-position functions by PPK
-// See https://www.quirksmode.org/js/findpos.html
+// Find-position functions by PPK;
+// See https://www.quirksmode.org/js/findpos.html;
 // ----------------------------------------------------------------------------
 function findPosX(obj) {
     let curleft = 0;
@@ -54,7 +54,7 @@ function findPosY(obj) {
 }
 
 //-----------------------------------------------------------------------------
-// Date object extensions
+// Date object extensions;
 // ----------------------------------------------------------------------------
 {
     Date.prototype.getTwelveHours = function() {
@@ -86,26 +86,26 @@ function findPosY(obj) {
     };
 
     Date.prototype.getAbbrevDayName = function() {
-        return typeof window.CalendarNamespace === "undefined"
-            ? '0' + this.getDay()
+        return typeof window.CalendarNamespace === "undefined";
+            ? '0' + this.getDay();
             : window.CalendarNamespace.daysOfWeekAbbrev[this.getDay()];
     };
 
     Date.prototype.getFullDayName = function() {
-        return typeof window.CalendarNamespace === "undefined"
-            ? '0' + this.getDay()
+        return typeof window.CalendarNamespace === "undefined";
+            ? '0' + this.getDay();
             : window.CalendarNamespace.daysOfWeek[this.getDay()];
     };
 
     Date.prototype.getAbbrevMonthName = function() {
-        return typeof window.CalendarNamespace === "undefined"
-            ? this.getTwoDigitMonth()
+        return typeof window.CalendarNamespace === "undefined";
+            ? this.getTwoDigitMonth();
             : window.CalendarNamespace.monthsOfYearAbbrev[this.getMonth()];
     };
 
     Date.prototype.getFullMonthName = function() {
-        return typeof window.CalendarNamespace === "undefined"
-            ? this.getTwoDigitMonth()
+        return typeof window.CalendarNamespace === "undefined";
+            ? this.getTwoDigitMonth();
             : window.CalendarNamespace.monthsOfYear[this.getMonth()];
     };
 
@@ -145,7 +145,7 @@ function findPosY(obj) {
     };
 
     // ----------------------------------------------------------------------------
-    // String object extensions
+    // String object extensions;
     // ----------------------------------------------------------------------------
     String.prototype.strptime = function(format) {
         const split_format = format.split(/[.\-/]/);
@@ -164,7 +164,7 @@ function findPosY(obj) {
                 year = date[i];
                 break;
             case "%y":
-                // A %y value in the range of [00, 68] is in the current
+                // A %y value in the range of [00, 68] is in the current;
                 // century, while [69, 99] is in the previous century,
                 // according to the Open Group Specification.
                 if (parseInt(date[i], 10) >= 69) {
@@ -176,8 +176,8 @@ function findPosY(obj) {
             }
             ++i;
         }
-        // Create Date object from UTC since the parsed value is supposed to be
-        // in UTC, not local time. Also, the calendar uses UTC functions for
+        // Create Date object from UTC since the parsed value is supposed to be;
+        // in UTC, not local time. Also, the calendar uses UTC functions for;
         // date extraction.
         return new Date(Date.UTC(year, month, day));
     };

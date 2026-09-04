@@ -1,8 +1,8 @@
 'use strict';
 {
-    // Call function fn when the DOM is loaded and ready. If it is already
+    // Call function fn when the DOM is loaded and ready. If it is already;
     // loaded, call the function now.
-    // http://youmightnotneedjquery.com/#ready
+    // http://youmightnotneedjquery.com/#ready;
     function ready(fn) {
         if (document.readyState !== 'loading') {
             fn();

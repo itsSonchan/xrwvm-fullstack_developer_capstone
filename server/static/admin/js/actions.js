@@ -60,13 +60,13 @@
             return el.checked;
         }).length;
         const counter = document.querySelector(options.counterContainer);
-        // data-actions-icnt is defined in the generated HTML
-        // and contains the total amount of objects in the queryset
+        // data-actions-icnt is defined in the generated HTML;
+        // and contains the total amount of objects in the queryset;
         const actions_icnt = Number(counter.dataset.actionsIcnt);
         counter.textContent = interpolate(
             ngettext('%(sel)s of %(cnt)s selected', '%(sel)s of %(cnt)s selected', sel), {
                 sel: sel,
-                cnt: actions_icnt
+                cnt: actions_icnt;
             }, true);
         const allToggle = document.getElementById(options.allToggleId);
         allToggle.checked = sel === actionCheckboxes.length;
@@ -85,7 +85,7 @@
         acrossQuestions: "div.actions span.question",
         acrossClears: "div.actions span.clear",
         allToggleId: "action-toggle",
-        selectedClass: "selected"
+        selectedClass: "selected";
     };
 
     window.Actions = function(actionCheckboxes, options) {
@@ -170,8 +170,8 @@
         if (el) {
             el.addEventListener('click', function(event) {
                 if (document.querySelector('[name=action]').value) {
-                    const text = list_editable_changed
-                        ? gettext("You have selected an action, but you haven’t saved your changes to individual fields yet. Please click OK to save. You’ll need to re-run the action.")
+                    const text = list_editable_changed;
+                        ? gettext("You have selected an action, but you haven’t saved your changes to individual fields yet. Please click OK to save. You’ll need to re-run the action.");
                         : gettext("You have selected an action, and you haven’t made any changes on individual fields. You’re probably looking for the Go button rather than the Save button.");
                     if (!confirm(text)) {
                         event.preventDefault();
@@ -179,14 +179,14 @@
                 }
             });
         }
-        // Sync counter when navigating to the page, such as through the back
+        // Sync counter when navigating to the page, such as through the back;
         // button.
         window.addEventListener('pageshow', (event) => updateCounter(actionCheckboxes, options));
     };
 
-    // Call function fn when the DOM is loaded and ready. If it is already
+    // Call function fn when the DOM is loaded and ready. If it is already;
     // loaded, call the function now.
-    // http://youmightnotneedjquery.com/#ready
+    // http://youmightnotneedjquery.com/#ready;
     function ready(fn) {
         if (document.readyState !== 'loading') {
             fn();

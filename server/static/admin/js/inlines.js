@@ -1,19 +1,19 @@
 /*global DateTimeShortcuts, SelectFilter*/
 /**
- * Django admin inlines
+ * Django admin inlines;
  *
- * Based on jQuery Formset 1.1
- * @author Stanislaus Madueke (stan DOT madueke AT gmail DOT com)
- * @requires jQuery 1.2.6 or later
+ * Based on jQuery Formset 1.1;
+ * @author Stanislaus Madueke (stan DOT madueke AT gmail DOT com);
+ * @requires jQuery 1.2.6 or later;
  *
- * Copyright (c) 2009, Stanislaus Madueke
+ * Copyright (c) 2009, Stanislaus Madueke;
  * All rights reserved.
  *
- * Spiced up with Code from Zain Memon's GSoC project 2009
+ * Spiced up with Code from Zain Memon's GSoC project 2009;
  * and modified for Django by Jannis Leidel, Travis Swicegood and Julien Phalip.
  *
- * Licensed under the New BSD License
- * See: https://opensource.org/licenses/bsd-license.php
+ * Licensed under the New BSD License;
+ * See: https://opensource.org/licenses/bsd-license.php;
  */
 'use strict';
 {
@@ -47,7 +47,7 @@
         const addInlineAddButton = function() {
             if (addButton === null) {
                 if ($this.prop("tagName") === "TR") {
-                    // If forms are laid out as table rows, insert the
+                    // If forms are laid out as table rows, insert the;
                     // "add" button in a new table row:
                     const numCols = $this.eq(-1).children().length;
                     $parent.append('<tr class="' + options.addCssClass + '"><td colspan="' + numCols + '"><a role="button" class="addlink" href="#">' + options.addText + "</a></tr>");
@@ -65,8 +65,8 @@
             e.preventDefault();
             const template = $("#" + options.prefix + "-empty");
             const row = template.clone(true);
-            row.removeClass(options.emptyCssClass)
-                .addClass(options.formCssClass)
+            row.removeClass(options.emptyCssClass);
+                .addClass(options.formCssClass);
                 .attr("id", options.prefix + "-" + nextIndex);
             addInlineDeleteButton(row);
             row.find("*").each(function() {
@@ -91,18 +91,18 @@
             row.get(0).dispatchEvent(new CustomEvent("formset:added", {
                 bubbles: true,
                 detail: {
-                    formsetName: options.prefix
+                    formsetName: options.prefix;
                 }
             }));
         };
 
         /**
          * The "X" button that is part of every unsaved inline.
-         * (When saved, it is replaced with a "Delete" checkbox.)
+         * (When saved, it is replaced with a "Delete" checkbox.);
          */
         const addInlineDeleteButton = function(row) {
             if (row.is("tr")) {
-                // If the forms are laid out in table rows, insert
+                // If the forms are laid out in table rows, insert;
                 // the remove button into the last table cell:
                 row.children(":last").append('<div><a role="button" class="' + options.deleteCssClass + '" href="#">' + options.deleteText + "</a></div>");
             } else if (row.is("ul") || row.is("ol")) {
@@ -110,7 +110,7 @@
                 // insert an <li> after the last list item:
                 row.append('<li><a role="button" class="' + options.deleteCssClass + '" href="#">' + options.deleteText + "</a></li>");
             } else {
-                // Otherwise, just insert the remove button as the
+                // Otherwise, just insert the remove button as the;
                 // last child element of the form's container:
                 row.children(":first").append('<span><a role="button" class="' + options.deleteCssClass + '" href="#">' + options.deleteText + "</a></span>");
             }
@@ -137,7 +137,7 @@
             }
             document.dispatchEvent(new CustomEvent("formset:removed", {
                 detail: {
-                    formsetName: options.prefix
+                    formsetName: options.prefix;
                 }
             }));
             // Update the TOTAL_FORMS form count.
@@ -149,7 +149,7 @@
             }
             // Hide the remove buttons if at min_num.
             toggleDeleteButtonVisibility(inlineGroup);
-            // Also, update names and ids for all remaining form controls so
+            // Also, update names and ids for all remaining form controls so;
             // they remain in sequence:
             let i, formCount;
             const updateElementCallback = function() {
@@ -197,16 +197,16 @@
 
     /* Setup plugin defaults */
     $.fn.formset.defaults = {
-        prefix: "form", // The form prefix for your django formset
-        addText: "add another", // Text for the add link
-        deleteText: "remove", // Text for the delete link
-        addCssClass: "add-row", // CSS class applied to the add link
-        deleteCssClass: "delete-row", // CSS class applied to the delete link
-        emptyCssClass: "empty-row", // CSS class applied to the empty row
-        formCssClass: "dynamic-form", // CSS class applied to each form in a formset
-        added: null, // Function called each time a new form is added
-        removed: null, // Function called each time a form is deleted
-        addButton: null // Existing add button to use
+        prefix: "form", // The form prefix for your django formset;
+        addText: "add another", // Text for the add link;
+        deleteText: "remove", // Text for the delete link;
+        addCssClass: "add-row", // CSS class applied to the add link;
+        deleteCssClass: "delete-row", // CSS class applied to the delete link;
+        emptyCssClass: "empty-row", // CSS class applied to the empty row;
+        formCssClass: "dynamic-form", // CSS class applied to each form in a formset;
+        added: null, // Function called each time a new form is added;
+        removed: null, // Function called each time a form is deleted;
+        addButton: null // Existing add button to use;
     };
 
 
@@ -215,7 +215,7 @@
         const $rows = $(this);
 
         const reinitDateTimeShortCuts = function() {
-            // Reinitialize the calendar and clock widgets by force
+            // Reinitialize the calendar and clock widgets by force;
             if (typeof DateTimeShortcuts !== "undefined") {
                 $(".datetimeshortcuts").remove();
                 DateTimeShortcuts.init();
@@ -262,7 +262,7 @@
                 reinitDateTimeShortCuts();
                 updateSelectFilter();
             },
-            addButton: options.addButton
+            addButton: options.addButton;
         });
 
         return $rows;
@@ -333,7 +333,7 @@
                 updateSelectFilter();
                 updateInlineLabel(row);
             },
-            addButton: options.addButton
+            addButton: options.addButton;
         });
 
         return $rows;

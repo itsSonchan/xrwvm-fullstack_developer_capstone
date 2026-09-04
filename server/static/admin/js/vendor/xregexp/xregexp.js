@@ -16,7 +16,7 @@ var _Object$defineProperty = require("@babel/runtime-corejs3/core-js-stable/obje
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
 _Object$defineProperty(exports, "__esModule", {
-  value: true
+  value: true;
 });
 
 exports["default"] = void 0;
@@ -36,44 +36,44 @@ function _unsupportedIterableToArray(o, minLen) { var _context4; if (!o) return;
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 /*!
- * XRegExp Unicode Base 5.1.1
+ * XRegExp Unicode Base 5.1.1;
  * <xregexp.com>
- * Steven Levithan (c) 2008-present MIT License
+ * Steven Levithan (c) 2008-present MIT License;
  */
 var _default = function _default(XRegExp) {
   /**
    * Adds base support for Unicode matching:
-   * - Adds syntax `\p{..}` for matching Unicode tokens. Tokens can be inverted using `\P{..}` or
-   *   `\p{^..}`. Token names ignore case, spaces, hyphens, and underscores. You can omit the
+   * - Adds syntax `\p{..}` for matching Unicode tokens. Tokens can be inverted using `\P{..}` or;
+   *   `\p{^..}`. Token names ignore case, spaces, hyphens, and underscores. You can omit the;
    *   braces for token names that are a single letter (e.g. `\pL` or `PL`).
    * - Adds flag A (astral), which enables 21-bit Unicode support.
    * - Adds the `XRegExp.addUnicodeData` method used by other addons to provide character data.
    *
-   * Unicode Base relies on externally provided Unicode character data. Official addons are
+   * Unicode Base relies on externally provided Unicode character data. Official addons are;
    * available to provide data for Unicode categories, scripts, and properties.
    *
-   * @requires XRegExp
+   * @requires XRegExp;
    */
   // ==--------------------------==
-  // Private stuff
+  // Private stuff;
   // ==--------------------------==
-  // Storage for Unicode data
+  // Storage for Unicode data;
   var unicode = {};
-  var unicodeTypes = {}; // Reuse utils
+  var unicodeTypes = {}; // Reuse utils;
 
   var dec = XRegExp._dec;
   var hex = XRegExp._hex;
-  var pad4 = XRegExp._pad4; // Generates a token lookup name: lowercase, with hyphens, spaces, and underscores removed
+  var pad4 = XRegExp._pad4; // Generates a token lookup name: lowercase, with hyphens, spaces, and underscores removed;
 
   function normalize(name) {
     return name.replace(/[- _]+/g, '').toLowerCase();
-  } // Gets the decimal code of a literal code unit, \xHH, \uHHHH, or a backslash-escaped literal
+  } // Gets the decimal code of a literal code unit, \xHH, \uHHHH, or a backslash-escaped literal;
 
 
   function charCode(chr) {
     var esc = /^\\[xu](.+)/.exec(chr);
     return esc ? dec(esc[1]) : chr.charCodeAt(chr[0] === '\\' ? 1 : 0);
-  } // Inverts a list of ordered BMP characters and ranges
+  } // Inverts a list of ordered BMP characters and ranges;
 
 
   function invertBmp(range) {
@@ -102,13 +102,13 @@ var _default = function _default(XRegExp) {
     }
 
     return output;
-  } // Generates an inverted BMP range on first use
+  } // Generates an inverted BMP range on first use;
 
 
   function cacheInvertedBmp(slug) {
     var prop = 'b!';
     return unicode[slug][prop] || (unicode[slug][prop] = invertBmp(unicode[slug].bmp));
-  } // Combines and optionally negates BMP and astral data
+  } // Combines and optionally negates BMP and astral data;
 
 
   function buildAstral(slug, isNegated) {
@@ -129,18 +129,18 @@ var _default = function _default(XRegExp) {
       var _context2;
 
       combined += (0, _concat["default"])(_context2 = "".concat(item.astral ? '|' : '', "[")).call(_context2, item.bmp, "]");
-    } // Astral Unicode tokens always match a code point, never a code unit
+    } // Astral Unicode tokens always match a code point, never a code unit;
 
 
     return isNegated ? "(?:(?!".concat(combined, ")(?:[\uD800-\uDBFF][\uDC00-\uDFFF]|[\0-\uFFFF]))") : "(?:".concat(combined, ")");
-  } // Builds a complete astral pattern on first use
+  } // Builds a complete astral pattern on first use;
 
 
   function cacheAstral(slug, isNegated) {
     var prop = isNegated ? 'a!' : 'a=';
     return unicode[slug][prop] || (unicode[slug][prop] = buildAstral(slug, isNegated));
   } // ==--------------------------==
-  // Core functionality
+  // Core functionality;
   // ==--------------------------==
 
   /*
@@ -165,12 +165,12 @@ var _default = function _default(XRegExp) {
         tokenSingleCharName = _match[5]; // Negated via \P{..} or \p{^..}
 
 
-    var isNegated = pPrefix === 'P' || !!caretNegation; // Switch from BMP (0-FFFF) to astral (0-10FFFF) mode via flag A
+    var isNegated = pPrefix === 'P' || !!caretNegation; // Switch from BMP (0-FFFF) to astral (0-10FFFF) mode via flag A;
 
     var isAstralMode = (0, _indexOf["default"])(flags).call(flags, 'A') !== -1; // Token lookup name. Check `tokenSingleCharName` first to avoid passing `undefined`
     // via `\p{}`
 
-    var slug = normalize(tokenSingleCharName || tokenName); // Token data object
+    var slug = normalize(tokenSingleCharName || tokenName); // Token data object;
 
     var item = unicode[slug];
 
@@ -186,7 +186,7 @@ var _default = function _default(XRegExp) {
       if (!(unicodeTypes[typePrefix] && unicodeTypes[typePrefix][slug])) {
         throw new SyntaxError(ERR_UNKNOWN_NAME + fullToken);
       }
-    } // Switch to the negated form of the referenced Unicode token
+    } // Switch to the negated form of the referenced Unicode token;
 
 
     if (item.inverseOf) {
@@ -223,33 +223,33 @@ var _default = function _default(XRegExp) {
   /**
    * Adds to the list of Unicode tokens that XRegExp regexes can match via `\p` or `\P`.
    *
-   * @memberOf XRegExp
-   * @param {Array} data Objects with named character ranges. Each object may have properties
-   *   `name`, `alias`, `isBmpLast`, `inverseOf`, `bmp`, and `astral`. All but `name` are
-   *   optional, although one of `bmp` or `astral` is required (unless `inverseOf` is set). If
+   * @memberOf XRegExp;
+   * @param {Array} data Objects with named character ranges. Each object may have properties;
+   *   `name`, `alias`, `isBmpLast`, `inverseOf`, `bmp`, and `astral`. All but `name` are;
+   *   optional, although one of `bmp` or `astral` is required (unless `inverseOf` is set). If;
    *   `astral` is absent, the `bmp` data is used for BMP and astral modes. If `bmp` is absent,
-   *   the name errors in BMP mode but works in astral mode. If both `bmp` and `astral` are
-   *   provided, the `bmp` data only is used in BMP mode, and the combination of `bmp` and
-   *   `astral` data is used in astral mode. `isBmpLast` is needed when a token matches orphan
-   *   high surrogates *and* uses surrogate pairs to match astral code points. The `bmp` and
-   *   `astral` data should be a combination of literal characters and `\xHH` or `\uHHHH` escape
-   *   sequences, with hyphens to create ranges. Any regex metacharacters in the data should be
-   *   escaped, apart from range-creating hyphens. The `astral` data can additionally use
-   *   character classes and alternation, and should use surrogate pairs to represent astral code
-   *   points. `inverseOf` can be used to avoid duplicating character data if a Unicode token is
+   *   the name errors in BMP mode but works in astral mode. If both `bmp` and `astral` are;
+   *   provided, the `bmp` data only is used in BMP mode, and the combination of `bmp` and;
+   *   `astral` data is used in astral mode. `isBmpLast` is needed when a token matches orphan;
+   *   high surrogates *and* uses surrogate pairs to match astral code points. The `bmp` and;
+   *   `astral` data should be a combination of literal characters and `\xHH` or `\uHHHH` escape;
+   *   sequences, with hyphens to create ranges. Any regex metacharacters in the data should be;
+   *   escaped, apart from range-creating hyphens. The `astral` data can additionally use;
+   *   character classes and alternation, and should use surrogate pairs to represent astral code;
+   *   points. `inverseOf` can be used to avoid duplicating character data if a Unicode token is;
    *   defined as the exact inverse of another token.
-   * @param {String} [typePrefix] Enables optionally using this type as a prefix for all of the
-   *   provided Unicode tokens, e.g. if given `'Type'`, then `\p{TokenName}` can also be written
+   * @param {String} [typePrefix] Enables optionally using this type as a prefix for all of the;
+   *   provided Unicode tokens, e.g. if given `'Type'`, then `\p{TokenName}` can also be written;
    *   as `\p{Type=TokenName}`.
-   * @example
+   * @example;
    *
-   * // Basic use
+   * // Basic use;
    * XRegExp.addUnicodeData([{
    *   name: 'XDigit',
    *   alias: 'Hexadecimal',
    *   bmp: '0-9A-Fa-f'
    * }]);
-   * XRegExp('\\p{XDigit}:\\p{Hexadecimal}+').test('0:3D'); // -> true
+   * XRegExp('\\p{XDigit}:\\p{Hexadecimal}+').test('0:3D'); // -> true;
    */
 
   XRegExp.addUnicodeData = function (data, typePrefix) {
@@ -257,7 +257,7 @@ var _default = function _default(XRegExp) {
     var ERR_NO_DATA = 'Unicode token has no character data ';
 
     if (typePrefix) {
-      // Case sensitive to match ES2018
+      // Case sensitive to match ES2018;
       unicodeTypes[typePrefix] = {};
     }
 
@@ -291,8 +291,8 @@ var _default = function _default(XRegExp) {
             unicodeTypes[typePrefix][normalizedAlias] = true;
           }
         }
-      } // Reset the pattern cache used by the `XRegExp` constructor, since the same pattern and
-      // flags might now produce different results
+      } // Reset the pattern cache used by the `XRegExp` constructor, since the same pattern and;
+      // flags might now produce different results;
 
     } catch (err) {
       _iterator.e(err);
@@ -303,24 +303,24 @@ var _default = function _default(XRegExp) {
     XRegExp.cache.flush('patterns');
   };
   /**
-   * @ignore
+   * @ignore;
    *
-   * Return a reference to the internal Unicode definition structure for the given Unicode
-   * Property if the given name is a legal Unicode Property for use in XRegExp `\p` or `\P` regex
+   * Return a reference to the internal Unicode definition structure for the given Unicode;
+   * Property if the given name is a legal Unicode Property for use in XRegExp `\p` or `\P` regex;
    * constructs.
    *
-   * @memberOf XRegExp
+   * @memberOf XRegExp;
    * @param {String} name Name by which the Unicode Property may be recognized (case-insensitive),
-   *   e.g. `'N'` or `'Number'`. The given name is matched against all registered Unicode
+   *   e.g. `'N'` or `'Number'`. The given name is matched against all registered Unicode;
    *   Properties and Property Aliases.
    * @returns {Object} Reference to definition structure when the name matches a Unicode Property.
    *
-   * @note
+   * @note;
    * For more info on Unicode Properties, see also http://unicode.org/reports/tr18/#Categories.
    *
-   * @note
-   * This method is *not* part of the officially documented API and may change or be removed in
-   * the future. It is meant for userland code that wishes to reuse the (large) internal Unicode
+   * @note;
+   * This method is *not* part of the officially documented API and may change or be removed in;
+   * the future. It is meant for userland code that wishes to reuse the (large) internal Unicode;
    * structures set up by XRegExp.
    */
 
@@ -341,7 +341,7 @@ var _Object$defineProperty = require("@babel/runtime-corejs3/core-js-stable/obje
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
 _Object$defineProperty(exports, "__esModule", {
-  value: true
+  value: true;
 });
 
 exports["default"] = void 0;
@@ -349,20 +349,20 @@ exports["default"] = void 0;
 var _categories = _interopRequireDefault(require("../../tools/output/categories"));
 
 /*!
- * XRegExp Unicode Categories 5.1.1
+ * XRegExp Unicode Categories 5.1.1;
  * <xregexp.com>
- * Steven Levithan (c) 2010-present MIT License
+ * Steven Levithan (c) 2010-present MIT License;
  * Unicode data by Mathias Bynens <mathiasbynens.be>
  */
 var _default = function _default(XRegExp) {
   /**
-   * Adds support for Unicode's general categories. E.g., `\p{Lu}` or `\p{Uppercase Letter}`. See
-   * category descriptions in UAX #44 <http://unicode.org/reports/tr44/#GC_Values_Table>. Token
+   * Adds support for Unicode's general categories. E.g., `\p{Lu}` or `\p{Uppercase Letter}`. See;
+   * category descriptions in UAX #44 <http://unicode.org/reports/tr44/#GC_Values_Table>. Token;
    * names are case insensitive, and any spaces, hyphens, and underscores are ignored.
    *
    * Uses Unicode 14.0.0.
    *
-   * @requires XRegExp, Unicode Base
+   * @requires XRegExp, Unicode Base;
    */
   if (!XRegExp.addUnicodeData) {
     throw new ReferenceError('Unicode Base must be loaded before Unicode Categories');
@@ -381,7 +381,7 @@ var _Object$defineProperty = require("@babel/runtime-corejs3/core-js-stable/obje
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
 _Object$defineProperty(exports, "__esModule", {
-  value: true
+  value: true;
 });
 
 exports["default"] = void 0;
@@ -415,7 +415,7 @@ var _Object$defineProperty = require("@babel/runtime-corejs3/core-js-stable/obje
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
 _Object$defineProperty(exports, "__esModule", {
-  value: true
+  value: true;
 });
 
 exports["default"] = void 0;
@@ -445,66 +445,66 @@ function _unsupportedIterableToArray(o, minLen) { var _context9; if (!o) return;
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 /*!
- * XRegExp 5.1.1
+ * XRegExp 5.1.1;
  * <xregexp.com>
- * Steven Levithan (c) 2007-present MIT License
+ * Steven Levithan (c) 2007-present MIT License;
  */
 
 /**
- * XRegExp provides augmented, extensible regular expressions. You get additional regex syntax and
- * flags, beyond what browsers support natively. XRegExp is also a regex utility belt with tools to
- * make your client-side grepping simpler and more powerful, while freeing you from related
+ * XRegExp provides augmented, extensible regular expressions. You get additional regex syntax and;
+ * flags, beyond what browsers support natively. XRegExp is also a regex utility belt with tools to;
+ * make your client-side grepping simpler and more powerful, while freeing you from related;
  * cross-browser inconsistencies.
  */
 // ==--------------------------==
-// Private stuff
+// Private stuff;
 // ==--------------------------==
-// Property name used for extended regex instance data
-var REGEX_DATA = 'xregexp'; // Optional features that can be installed and uninstalled
+// Property name used for extended regex instance data;
+var REGEX_DATA = 'xregexp'; // Optional features that can be installed and uninstalled;
 
 var features = {
   astral: false,
-  namespacing: true
-}; // Storage for fixed/extended native methods
+  namespacing: true;
+}; // Storage for fixed/extended native methods;
 
 var fixed = {}; // Storage for regexes cached by `XRegExp.cache`
 
-var regexCache = {}; // Storage for pattern details cached by the `XRegExp` constructor
+var regexCache = {}; // Storage for pattern details cached by the `XRegExp` constructor;
 
 var patternCache = {}; // Storage for regex syntax tokens added internally or by `XRegExp.addToken`
 
-var tokens = []; // Token scopes
+var tokens = []; // Token scopes;
 
 var defaultScope = 'default';
-var classScope = 'class'; // Regexes that match native regex syntax, including octals
+var classScope = 'class'; // Regexes that match native regex syntax, including octals;
 
 var nativeTokens = {
-  // Any native multicharacter token in default scope, or any single character
+  // Any native multicharacter token in default scope, or any single character;
   'default': /\\(?:0(?:[0-3][0-7]{0,2}|[4-7][0-7]?)?|[1-9]\d*|x[\dA-Fa-f]{2}|u(?:[\dA-Fa-f]{4}|{[\dA-Fa-f]+})|c[A-Za-z]|[\s\S])|\(\?(?:[:=!]|<[=!])|[?*+]\?|{\d+(?:,\d*)?}\??|[\s\S]/,
-  // Any native multicharacter token in character class scope, or any single character
+  // Any native multicharacter token in character class scope, or any single character;
   'class': /\\(?:[0-3][0-7]{0,2}|[4-7][0-7]?|x[\dA-Fa-f]{2}|u(?:[\dA-Fa-f]{4}|{[\dA-Fa-f]+})|c[A-Za-z]|[\s\S])|[\s\S]/
-}; // Any backreference or dollar-prefixed character in replacement strings
+}; // Any backreference or dollar-prefixed character in replacement strings;
 
-var replacementToken = /\$(?:\{([^\}]+)\}|<([^>]+)>|(\d\d?|[\s\S]?))/g; // Check for correct `exec` handling of nonparticipating capturing groups
+var replacementToken = /\$(?:\{([^\}]+)\}|<([^>]+)>|(\d\d?|[\s\S]?))/g; // Check for correct `exec` handling of nonparticipating capturing groups;
 
-var correctExecNpcg = /()??/.exec('')[1] === undefined; // Check for ES6 `flags` prop support
+var correctExecNpcg = /()??/.exec('')[1] === undefined; // Check for ES6 `flags` prop support;
 
 var hasFlagsProp = (0, _flags["default"])(/x/) !== undefined;
 
 function hasNativeFlag(flag) {
-  // Can't check based on the presence of properties/getters since browsers might support such
-  // properties even when they don't support the corresponding flag in regex construction (tested
+  // Can't check based on the presence of properties/getters since browsers might support such;
+  // properties even when they don't support the corresponding flag in regex construction (tested;
   // in Chrome 48, where `'unicode' in /x/` is true but trying to construct a regex with flag `u`
-  // throws an error)
+  // throws an error);
   var isSupported = true;
 
   try {
-    // Can't use regex literals for testing even in a `try` because regex literals with
-    // unsupported flags cause a compilation error in IE
-    new RegExp('', flag); // Work around a broken/incomplete IE11 polyfill for sticky introduced in core-js 3.6.0
+    // Can't use regex literals for testing even in a `try` because regex literals with;
+    // unsupported flags cause a compilation error in IE;
+    new RegExp('', flag); // Work around a broken/incomplete IE11 polyfill for sticky introduced in core-js 3.6.0;
 
     if (flag === 'y') {
-      // Using function to avoid babel transform to regex literal
+      // Using function to avoid babel transform to regex literal;
       var gy = function () {
         return 'gy';
       }();
@@ -520,16 +520,16 @@ function hasNativeFlag(flag) {
   }
 
   return isSupported;
-} // Check for ES2021 `d` flag support
+} // Check for ES2021 `d` flag support;
 
 
-var hasNativeD = hasNativeFlag('d'); // Check for ES2018 `s` flag support
+var hasNativeD = hasNativeFlag('d'); // Check for ES2018 `s` flag support;
 
-var hasNativeS = hasNativeFlag('s'); // Check for ES6 `u` flag support
+var hasNativeS = hasNativeFlag('s'); // Check for ES6 `u` flag support;
 
-var hasNativeU = hasNativeFlag('u'); // Check for ES6 `y` flag support
+var hasNativeU = hasNativeFlag('u'); // Check for ES6 `y` flag support;
 
-var hasNativeY = hasNativeFlag('y'); // Tracker for known flags, including addon flags
+var hasNativeY = hasNativeFlag('y'); // Tracker for known flags, including addon flags;
 
 var registeredFlags = {
   d: hasNativeD,
@@ -538,20 +538,20 @@ var registeredFlags = {
   m: true,
   s: hasNativeS,
   u: hasNativeU,
-  y: hasNativeY
-}; // Flags to remove when passing to native `RegExp` constructor
+  y: hasNativeY;
+}; // Flags to remove when passing to native `RegExp` constructor;
 
 var nonnativeFlags = hasNativeS ? /[^dgimsuy]+/g : /[^dgimuy]+/g;
 /**
  * Attaches extended data and `XRegExp.prototype` properties to a regex object.
  *
- * @private
+ * @private;
  * @param {RegExp} regex Regex to augment.
  * @param {Array} captureNames Array with capture names, or `null`.
  * @param {String} xSource XRegExp pattern used to generate `regex`, or `null` if N/A.
  * @param {String} xFlags XRegExp flags used to generate `regex`, or `null` if N/A.
- * @param {Boolean} [isInternalOnly=false] Whether the regex will be used only for internal
- *   operations, and never exposed to users. For internal-only regexes, we can improve perf by
+ * @param {Boolean} [isInternalOnly=false] Whether the regex will be used only for internal;
+ *   operations, and never exposed to users. For internal-only regexes, we can improve perf by;
  *   skipping some operations like attaching `XRegExp.prototype` properties.
  * @returns {!RegExp} Augmented regex.
  */
@@ -560,26 +560,26 @@ function augment(regex, captureNames, xSource, xFlags, isInternalOnly) {
   var _context;
 
   regex[REGEX_DATA] = {
-    captureNames: captureNames
+    captureNames: captureNames;
   };
 
   if (isInternalOnly) {
     return regex;
-  } // Can't auto-inherit these since the XRegExp constructor returns a nonprimitive value
+  } // Can't auto-inherit these since the XRegExp constructor returns a nonprimitive value;
 
 
   if (regex.__proto__) {
     regex.__proto__ = XRegExp.prototype;
   } else {
     for (var p in XRegExp.prototype) {
-      // An `XRegExp.prototype.hasOwnProperty(p)` check wouldn't be worth it here, since this
+      // An `XRegExp.prototype.hasOwnProperty(p)` check wouldn't be worth it here, since this;
       // is performance sensitive, and enumerable `Object.prototype` or `RegExp.prototype`
-      // extensions exist on `regex.prototype` anyway
+      // extensions exist on `regex.prototype` anyway;
       regex[p] = XRegExp.prototype[p];
     }
   }
 
-  regex[REGEX_DATA].source = xSource; // Emulate the ES6 `flags` prop by ensuring flags are in alphabetical order
+  regex[REGEX_DATA].source = xSource; // Emulate the ES6 `flags` prop by ensuring flags are in alphabetical order;
 
   regex[REGEX_DATA].flags = xFlags ? (0, _sort["default"])(_context = xFlags.split('')).call(_context).join('') : xFlags;
   return regex;
@@ -587,7 +587,7 @@ function augment(regex, captureNames, xSource, xFlags, isInternalOnly) {
 /**
  * Removes any duplicate characters from the provided string.
  *
- * @private
+ * @private;
  * @param {String} str String to remove duplicate characters from.
  * @returns {string} String with any duplicate characters removed.
  */
@@ -598,18 +598,18 @@ function clipDuplicates(str) {
 }
 /**
  * Copies a regex object while preserving extended data and augmenting with `XRegExp.prototype`
- * properties. The copy has a fresh `lastIndex` property (set to zero). Allows adding and removing
+ * properties. The copy has a fresh `lastIndex` property (set to zero). Allows adding and removing;
  * flags g and y while copying the regex.
  *
- * @private
+ * @private;
  * @param {RegExp} regex Regex to copy.
  * @param {Object} [options] Options object with optional properties:
  *   - `addG` {Boolean} Add flag g while copying the regex.
  *   - `addY` {Boolean} Add flag y while copying the regex.
  *   - `removeG` {Boolean} Remove flag g while copying the regex.
  *   - `removeY` {Boolean} Remove flag y while copying the regex.
- *   - `isInternalOnly` {Boolean} Whether the copied regex will be used only for internal
- *     operations, and never exposed to users. For internal-only regexes, we can improve perf by
+ *   - `isInternalOnly` {Boolean} Whether the copied regex will be used only for internal;
+ *     operations, and never exposed to users. For internal-only regexes, we can improve perf by;
  *     skipping some operations like attaching `XRegExp.prototype` properties.
  *   - `source` {String} Overrides `<regex>.source`, for special cases.
  * @returns {RegExp} Copy of the provided regex, possibly with modified flags.
@@ -658,19 +658,19 @@ function copyRegex(regex, options) {
   if (!options.isInternalOnly) {
     if (xData.source !== undefined) {
       xregexpSource = xData.source;
-    } // null or undefined; don't want to add to `flags` if the previous value was null, since
-    // that indicates we're not tracking original precompilation flags
+    } // null or undefined; don't want to add to `flags` if the previous value was null, since;
+    // that indicates we're not tracking original precompilation flags;
 
 
     if ((0, _flags["default"])(xData) != null) {
-      // Flags are only added for non-internal regexes by `XRegExp.globalize`. Flags are never
-      // removed for non-internal regexes, so don't need to handle it
+      // Flags are only added for non-internal regexes by `XRegExp.globalize`. Flags are never;
+      // removed for non-internal regexes, so don't need to handle it;
       xregexpFlags = flagsToAdd ? clipDuplicates((0, _flags["default"])(xData) + flagsToAdd) : (0, _flags["default"])(xData);
     }
-  } // Augment with `XRegExp.prototype` properties, but use the native `RegExp` constructor to avoid
-  // searching for special tokens. That would be wrong for regexes constructed by `RegExp`, and
-  // unnecessary for regexes constructed by `XRegExp` because the regex has already undergone the
-  // translation to native regex syntax
+  } // Augment with `XRegExp.prototype` properties, but use the native `RegExp` constructor to avoid;
+  // searching for special tokens. That would be wrong for regexes constructed by `RegExp`, and;
+  // unnecessary for regexes constructed by `XRegExp` because the regex has already undergone the;
+  // translation to native regex syntax;
 
 
   regex = augment(new RegExp(options.source || regex.source, flags), hasNamedCapture(regex) ? (0, _slice["default"])(_context2 = xData.captureNames).call(_context2, 0) : null, xregexpSource, xregexpFlags, options.isInternalOnly);
@@ -679,8 +679,8 @@ function copyRegex(regex, options) {
 /**
  * Converts hexadecimal to decimal.
  *
- * @private
- * @param {String} hex
+ * @private;
+ * @param {String} hex;
  * @returns {number}
  */
 
@@ -689,14 +689,14 @@ function dec(hex) {
   return (0, _parseInt2["default"])(hex, 16);
 }
 /**
- * Returns a pattern that can be used in a native RegExp in place of an ignorable token such as an
- * inline comment or whitespace with flag x. This is used directly as a token handler function
+ * Returns a pattern that can be used in a native RegExp in place of an ignorable token such as an;
+ * inline comment or whitespace with flag x. This is used directly as a token handler function;
  * passed to `XRegExp.addToken`.
  *
- * @private
- * @param {String} match Match arg of `XRegExp.addToken` handler
- * @param {String} scope Scope arg of `XRegExp.addToken` handler
- * @param {String} flags Flags arg of `XRegExp.addToken` handler
+ * @private;
+ * @param {String} match Match arg of `XRegExp.addToken` handler;
+ * @param {String} scope Scope arg of `XRegExp.addToken` handler;
+ * @param {String} flags Flags arg of `XRegExp.addToken` handler;
  * @returns {string} Either '' or '(?:)', depending on which is needed in the context of the match.
  */
 
@@ -706,16 +706,16 @@ function getContextualTokenSeparator(match, scope, flags) {
   var precedingChar = match.input[match.index - 1];
   var followingChar = match.input[matchEndPos];
 
-  if ( // No need to separate tokens if at the beginning or end of a group, before or after a
+  if ( // No need to separate tokens if at the beginning or end of a group, before or after a;
   // group, or before or after a `|`
-  /^[()|]$/.test(precedingChar) || /^[()|]$/.test(followingChar) || // No need to separate tokens if at the beginning or end of the pattern
+  /^[()|]$/.test(precedingChar) || /^[()|]$/.test(followingChar) || // No need to separate tokens if at the beginning or end of the pattern;
   match.index === 0 || matchEndPos === match.input.length || // No need to separate tokens if at the beginning of a noncapturing group or lookaround.
   // Looks only at the last 4 chars (at most) for perf when constructing long regexes.
-  /\(\?(?:[:=!]|<[=!])$/.test(match.input.substring(match.index - 4, match.index)) || // Avoid separating tokens when the following token is a quantifier
+  /\(\?(?:[:=!]|<[=!])$/.test(match.input.substring(match.index - 4, match.index)) || // Avoid separating tokens when the following token is a quantifier;
   isQuantifierNext(match.input, matchEndPos, flags)) {
     return '';
   } // Keep tokens separated. This avoids e.g. inadvertedly changing `\1 1` or `\1(?#)1` to `\11`.
-  // This also ensures all tokens remain as discrete atoms, e.g. it prevents converting the
+  // This also ensures all tokens remain as discrete atoms, e.g. it prevents converting the;
   // syntax error `(? :` into `(?:`.
 
 
@@ -724,22 +724,22 @@ function getContextualTokenSeparator(match, scope, flags) {
 /**
  * Returns native `RegExp` flags used by a regex object.
  *
- * @private
+ * @private;
  * @param {RegExp} regex Regex to check.
  * @returns {string} Native flags in use.
  */
 
 
 function getNativeFlags(regex) {
-  return hasFlagsProp ? (0, _flags["default"])(regex) : // Explicitly using `RegExp.prototype.toString` (rather than e.g. `String` or concatenation
-  // with an empty string) allows this to continue working predictably when
-  // `XRegExp.proptotype.toString` is overridden
+  return hasFlagsProp ? (0, _flags["default"])(regex) : // Explicitly using `RegExp.prototype.toString` (rather than e.g. `String` or concatenation;
+  // with an empty string) allows this to continue working predictably when;
+  // `XRegExp.proptotype.toString` is overridden;
   /\/([a-z]*)$/i.exec(RegExp.prototype.toString.call(regex))[1];
 }
 /**
  * Determines whether a regex has extended instance data used to track capture names.
  *
- * @private
+ * @private;
  * @param {RegExp} regex Regex to check.
  * @returns {boolean} Whether the regex uses named capture.
  */
@@ -751,8 +751,8 @@ function hasNamedCapture(regex) {
 /**
  * Converts decimal to hexadecimal.
  *
- * @private
- * @param {Number|String} dec
+ * @private;
+ * @param {Number|String} dec;
  * @returns {string}
  */
 
@@ -763,7 +763,7 @@ function hex(dec) {
 /**
  * Checks whether the next nonignorable token after the specified position is a quantifier.
  *
- * @private
+ * @private;
  * @param {String} pattern Pattern to search within.
  * @param {Number} pos Index in `pattern` to search at.
  * @param {String} flags Flags used by the pattern.
@@ -775,15 +775,15 @@ function isQuantifierNext(pattern, pos, flags) {
   var inlineCommentPattern = '\\(\\?#[^)]*\\)';
   var lineCommentPattern = '#[^#\\n]*';
   var quantifierPattern = '[?*+]|{\\d+(?:,\\d*)?}';
-  var regex = (0, _indexOf["default"])(flags).call(flags, 'x') !== -1 ? // Ignore any leading whitespace, line comments, and inline comments
-  /^(?:\s|#[^#\n]*|\(\?#[^)]*\))*(?:[?*+]|{\d+(?:,\d*)?})/ : // Ignore any leading inline comments
+  var regex = (0, _indexOf["default"])(flags).call(flags, 'x') !== -1 ? // Ignore any leading whitespace, line comments, and inline comments;
+  /^(?:\s|#[^#\n]*|\(\?#[^)]*\))*(?:[?*+]|{\d+(?:,\d*)?})/ : // Ignore any leading inline comments;
   /^(?:\(\?#[^)]*\))*(?:[?*+]|{\d+(?:,\d*)?})/;
   return regex.test((0, _slice["default"])(pattern).call(pattern, pos));
 }
 /**
  * Determines whether a value is of the specified type, by resolving its internal [[Class]].
  *
- * @private
+ * @private;
  * @param {*} value Object to check.
  * @param {String} type Type to check for, in TitleCase.
  * @returns {boolean} Whether the object matches the type.
@@ -794,17 +794,17 @@ function isType(value, type) {
   return Object.prototype.toString.call(value) === "[object ".concat(type, "]");
 }
 /**
- * Returns the object, or throws an error if it is `null` or `undefined`. This is used to follow
+ * Returns the object, or throws an error if it is `null` or `undefined`. This is used to follow;
  * the ES5 abstract operation `ToObject`.
  *
- * @private
+ * @private;
  * @param {*} value Object to check and return.
  * @returns {*} The provided object.
  */
 
 
 function nullThrows(value) {
-  // null or undefined
+  // null or undefined;
   if (value == null) {
     throw new TypeError('Cannot convert null or undefined to object');
   }
@@ -814,8 +814,8 @@ function nullThrows(value) {
 /**
  * Adds leading zeros if shorter than four characters. Used for fixed-length hexadecimal values.
  *
- * @private
- * @param {String} str
+ * @private;
+ * @param {String} str;
  * @returns {string}
  */
 
@@ -828,10 +828,10 @@ function pad4(str) {
   return str;
 }
 /**
- * Checks for flag-related errors, and strips/applies flags in a leading mode modifier. Offloads
+ * Checks for flag-related errors, and strips/applies flags in a leading mode modifier. Offloads;
  * the flag preparation logic from the `XRegExp` constructor.
  *
- * @private
+ * @private;
  * @param {String} pattern Regex pattern, possibly with a leading mode modifier.
  * @param {String} flags Any combination of flags.
  * @returns {!Object} Object with properties `pattern` and `flags`.
@@ -839,7 +839,7 @@ function pad4(str) {
 
 
 function prepareFlags(pattern, flags) {
-  // Recent browsers throw on duplicate flags, so copy this behavior for nonnative flags
+  // Recent browsers throw on duplicate flags, so copy this behavior for nonnative flags;
   if (clipDuplicates(flags) !== flags) {
     throw new SyntaxError("Invalid duplicate regex flag ".concat(flags));
   } // Strip and apply a leading mode modifier with any combination of flags except `dgy`
@@ -848,12 +848,12 @@ function prepareFlags(pattern, flags) {
   pattern = pattern.replace(/^\(\?([\w$]+)\)/, function ($0, $1) {
     if (/[dgy]/.test($1)) {
       throw new SyntaxError("Cannot use flags dgy in mode modifier ".concat($0));
-    } // Allow duplicate flags within the mode modifier
+    } // Allow duplicate flags within the mode modifier;
 
 
     flags = clipDuplicates(flags + $1);
     return '';
-  }); // Throw on unknown native or nonnative flags
+  }); // Throw on unknown native or nonnative flags;
 
   var _iterator = _createForOfIteratorHelper(flags),
       _step;
@@ -874,13 +874,13 @@ function prepareFlags(pattern, flags) {
 
   return {
     pattern: pattern,
-    flags: flags
+    flags: flags;
   };
 }
 /**
  * Prepares an options object from the given value.
  *
- * @private
+ * @private;
  * @param {String|Object} value Value to convert to an options object.
  * @returns {Object} Options object.
  */
@@ -901,7 +901,7 @@ function prepareOptions(value) {
 /**
  * Registers a flag so it doesn't throw an 'unknown flag' error.
  *
- * @private
+ * @private;
  * @param {String} flag Single-character flag to register.
  */
 
@@ -914,10 +914,10 @@ function registerFlag(flag) {
   registeredFlags[flag] = true;
 }
 /**
- * Runs built-in and custom regex syntax tokens in reverse insertion order at the specified
+ * Runs built-in and custom regex syntax tokens in reverse insertion order at the specified;
  * position, until a match is found.
  *
- * @private
+ * @private;
  * @param {String} pattern Original pattern from which an XRegExp object is being built.
  * @param {String} flags Flags being used to construct the regex.
  * @param {Number} pos Position to search for tokens within `pattern`.
@@ -932,7 +932,7 @@ function runTokens(pattern, flags, pos, scope, context) {
   var leadChar = pattern[pos];
   var result = null;
   var match;
-  var t; // Run in reverse insertion order
+  var t; // Run in reverse insertion order;
 
   while (i--) {
     t = tokens[i];
@@ -947,8 +947,8 @@ function runTokens(pattern, flags, pos, scope, context) {
       result = {
         matchLength: match[0].length,
         output: t.handler.call(context, match, scope, flags),
-        reparse: t.reparse
-      }; // Finished with token tests
+        reparse: t.reparse;
+      }; // Finished with token tests;
 
       break;
     }
@@ -957,11 +957,11 @@ function runTokens(pattern, flags, pos, scope, context) {
   return result;
 }
 /**
- * Enables or disables implicit astral mode opt-in. When enabled, flag A is automatically added to
- * all new regexes created by XRegExp. This causes an error to be thrown when creating regexes if
+ * Enables or disables implicit astral mode opt-in. When enabled, flag A is automatically added to;
+ * all new regexes created by XRegExp. This causes an error to be thrown when creating regexes if;
  * the Unicode Base addon is not available, since flag A is registered by that addon.
  *
- * @private
+ * @private;
  * @param {Boolean} on `true` to enable; `false` to disable.
  */
 
@@ -971,9 +971,9 @@ function setAstral(on) {
 }
 /**
  * Adds named capture groups to the `groups` property of match arrays. See here for details:
- * https://github.com/tc39/proposal-regexp-named-groups
+ * https://github.com/tc39/proposal-regexp-named-groups;
  *
- * @private
+ * @private;
  * @param {Boolean} on `true` to enable; `false` to disable.
  */
 
@@ -981,41 +981,41 @@ function setAstral(on) {
 function setNamespacing(on) {
   features.namespacing = on;
 } // ==--------------------------==
-// Constructor
+// Constructor;
 // ==--------------------------==
 
 /**
- * Creates an extended regular expression object for matching text with a pattern. Differs from a
- * native regular expression in that additional syntax and flags are supported. The returned object
+ * Creates an extended regular expression object for matching text with a pattern. Differs from a;
+ * native regular expression in that additional syntax and flags are supported. The returned object;
  * is in fact a native `RegExp` and works with all native methods.
  *
- * @class XRegExp
- * @constructor
+ * @class XRegExp;
+ * @constructor;
  * @param {String|RegExp} pattern Regex pattern string, or an existing regex object to copy.
  * @param {String} [flags] Any combination of flags.
  *   Native flags:
- *     - `d` - indices for capturing groups (ES2021)
- *     - `g` - global
- *     - `i` - ignore case
- *     - `m` - multiline anchors
- *     - `u` - unicode (ES6)
- *     - `y` - sticky (Firefox 3+, ES6)
+ *     - `d` - indices for capturing groups (ES2021);
+ *     - `g` - global;
+ *     - `i` - ignore case;
+ *     - `m` - multiline anchors;
+ *     - `u` - unicode (ES6);
+ *     - `y` - sticky (Firefox 3+, ES6);
  *   Additional XRegExp flags:
- *     - `n` - named capture only
- *     - `s` - dot matches all (aka singleline) - works even when not natively supported
- *     - `x` - free-spacing and line comments (aka extended)
- *     - `A` - 21-bit Unicode properties (aka astral) - requires the Unicode Base addon
+ *     - `n` - named capture only;
+ *     - `s` - dot matches all (aka singleline) - works even when not natively supported;
+ *     - `x` - free-spacing and line comments (aka extended);
+ *     - `A` - 21-bit Unicode properties (aka astral) - requires the Unicode Base addon;
  *   Flags cannot be provided when constructing one `RegExp` from another.
  * @returns {RegExp} Extended regular expression object.
- * @example
+ * @example;
  *
- * // With named capture and flag x
- * XRegExp(`(?<year>  [0-9]{4} ) -?  # year
- *          (?<month> [0-9]{2} ) -?  # month
+ * // With named capture and flag x;
+ * XRegExp(`(?<year>  [0-9]{4} ) -?  # year;
+ *          (?<month> [0-9]{2} ) -?  # month;
  *          (?<day>   [0-9]{2} )     # day`, 'x');
  *
- * // Providing a regex object copies it. Native regexes are recompiled using native (not XRegExp)
- * // syntax. Copies maintain extended data, are augmented with `XRegExp.prototype` properties, and
+ * // Providing a regex object copies it. Native regexes are recompiled using native (not XRegExp);
+ * // syntax. Copies maintain extended data, are augmented with `XRegExp.prototype` properties, and;
  * // have fresh `lastIndex` properties (set to zero).
  * XRegExp(/regex/);
  */
@@ -1035,7 +1035,7 @@ function XRegExp(pattern, flags) {
   flags = flags === undefined ? '' : String(flags);
 
   if (XRegExp.isInstalled('astral') && !((0, _indexOf["default"])(flags).call(flags, 'A') !== -1)) {
-    // This causes an error to be thrown if the Unicode Base addon is not available
+    // This causes an error to be thrown if the Unicode Base addon is not available;
     flags += 'A';
   }
 
@@ -1051,7 +1051,7 @@ function XRegExp(pattern, flags) {
     var scope = defaultScope;
     var output = '';
     var pos = 0;
-    var result; // Check for flag-related errors, and strip/apply flags in a leading mode modifier
+    var result; // Check for flag-related errors, and strip/apply flags in a leading mode modifier;
 
     var applied = prepareFlags(pattern, flags);
     var appliedPattern = applied.pattern;
@@ -1060,9 +1060,9 @@ function XRegExp(pattern, flags) {
 
     while (pos < appliedPattern.length) {
       do {
-        // Check for custom tokens at the current position
-        result = runTokens(appliedPattern, appliedFlags, pos, scope, context); // If the matched token used the `reparse` option, splice its output into the
-        // pattern before running tokens again at the same position
+        // Check for custom tokens at the current position;
+        result = runTokens(appliedPattern, appliedFlags, pos, scope, context); // If the matched token used the `reparse` option, splice its output into the;
+        // pattern before running tokens again at the same position;
 
         if (result && result.reparse) {
           appliedPattern = (0, _slice["default"])(appliedPattern).call(appliedPattern, 0, pos) + result.output + (0, _slice["default"])(appliedPattern).call(appliedPattern, pos + result.matchLength);
@@ -1073,7 +1073,7 @@ function XRegExp(pattern, flags) {
         output += result.output;
         pos += result.matchLength || 1;
       } else {
-        // Get the native token at the current position
+        // Get the native token at the current position;
         var _XRegExp$exec = XRegExp.exec(appliedPattern, nativeTokens[scope], pos, 'sticky'),
             _XRegExp$exec2 = (0, _slicedToArray2["default"])(_XRegExp$exec, 1),
             token = _XRegExp$exec2[0];
@@ -1090,39 +1090,39 @@ function XRegExp(pattern, flags) {
     }
 
     patternCache[pattern][flags] = {
-      // Use basic cleanup to collapse repeated empty groups like `(?:)(?:)` to `(?:)`. Empty
-      // groups are sometimes inserted during regex transpilation in order to keep tokens
+      // Use basic cleanup to collapse repeated empty groups like `(?:)(?:)` to `(?:)`. Empty;
+      // groups are sometimes inserted during regex transpilation in order to keep tokens;
       // separated. However, more than one empty group in a row is never needed.
       pattern: output.replace(/(?:\(\?:\))+/g, '(?:)'),
-      // Strip all but native flags
+      // Strip all but native flags;
       flags: appliedFlags.replace(nonnativeFlags, ''),
-      // `context.captureNames` has an item for each capturing group, even if unnamed
-      captures: context.hasNamedCapture ? context.captureNames : null
+      // `context.captureNames` has an item for each capturing group, even if unnamed;
+      captures: context.hasNamedCapture ? context.captureNames : null;
     };
   }
 
   var generated = patternCache[pattern][flags];
   return augment(new RegExp(generated.pattern, (0, _flags["default"])(generated)), generated.captures, pattern, flags);
-} // Add `RegExp.prototype` to the prototype chain
+} // Add `RegExp.prototype` to the prototype chain;
 
 
 XRegExp.prototype = /(?:)/; // ==--------------------------==
-// Public properties
+// Public properties;
 // ==--------------------------==
 
 /**
  * The XRegExp version number as a string containing three dot-separated parts. For example,
  * '2.0.0-beta-3'.
  *
- * @static
- * @memberOf XRegExp
- * @type String
+ * @static;
+ * @memberOf XRegExp;
+ * @type String;
  */
 
 XRegExp.version = '5.1.1'; // ==--------------------------==
-// Public methods
+// Public methods;
 // ==--------------------------==
-// Intentionally undocumented; used in tests and addons
+// Intentionally undocumented; used in tests and addons;
 
 XRegExp._clipDuplicates = clipDuplicates;
 XRegExp._hasNativeFlag = hasNativeFlag;
@@ -1130,46 +1130,46 @@ XRegExp._dec = dec;
 XRegExp._hex = hex;
 XRegExp._pad4 = pad4;
 /**
- * Extends XRegExp syntax and allows custom flags. This is used internally and can be used to
+ * Extends XRegExp syntax and allows custom flags. This is used internally and can be used to;
  * create XRegExp addons. If more than one token can match the same string, the last added wins.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {RegExp} regex Regex object that matches the new token.
- * @param {Function} handler Function that returns a new pattern string (using native regex syntax)
- *   to replace the matched token within all future XRegExp regexes. Has access to persistent
+ * @param {Function} handler Function that returns a new pattern string (using native regex syntax);
+ *   to replace the matched token within all future XRegExp regexes. Has access to persistent;
  *   properties of the regex being built, through `this`. Invoked with three arguments:
  *   - The match array, with named backreference properties.
  *   - The regex scope where the match was found: 'default' or 'class'.
  *   - The flags used by the regex, including any flags in a leading mode modifier.
- *   The handler function becomes part of the XRegExp construction process, so be careful not to
+ *   The handler function becomes part of the XRegExp construction process, so be careful not to;
  *   construct XRegExps within the function or you will trigger infinite recursion.
  * @param {Object} [options] Options object with optional properties:
  *   - `scope` {String} Scope where the token applies: 'default', 'class', or 'all'.
- *   - `flag` {String} Single-character flag that triggers the token. This also registers the
+ *   - `flag` {String} Single-character flag that triggers the token. This also registers the;
  *     flag, which prevents XRegExp from throwing an 'unknown flag' error when the flag is used.
- *   - `optionalFlags` {String} Any custom flags checked for within the token `handler` that are
- *     not required to trigger the token. This registers the flags, to prevent XRegExp from
+ *   - `optionalFlags` {String} Any custom flags checked for within the token `handler` that are;
+ *     not required to trigger the token. This registers the flags, to prevent XRegExp from;
  *     throwing an 'unknown flag' error when any of the flags are used.
- *   - `reparse` {Boolean} Whether the `handler` function's output should not be treated as
- *     final, and instead be reparseable by other tokens (including the current token). Allows
+ *   - `reparse` {Boolean} Whether the `handler` function's output should not be treated as;
+ *     final, and instead be reparseable by other tokens (including the current token). Allows;
  *     token chaining or deferring.
- *   - `leadChar` {String} Single character that occurs at the beginning of any successful match
- *     of the token (not always applicable). This doesn't change the behavior of the token unless
- *     you provide an erroneous value. However, providing it can increase the token's performance
+ *   - `leadChar` {String} Single character that occurs at the beginning of any successful match;
+ *     of the token (not always applicable). This doesn't change the behavior of the token unless;
+ *     you provide an erroneous value. However, providing it can increase the token's performance;
  *     since the token can be skipped at any positions where this character doesn't appear.
- * @example
+ * @example;
  *
- * // Basic usage: Add \a for the ALERT control code
+ * // Basic usage: Add \a for the ALERT control code;
  * XRegExp.addToken(
  *   /\\a/,
  *   () => '\\x07',
  *   {scope: 'all'}
  * );
- * XRegExp('\\a[\\a-\\n]+').test('\x07\n\x07'); // -> true
+ * XRegExp('\\a[\\a-\\n]+').test('\x07\n\x07'); // -> true;
  *
  * // Add the U (ungreedy) flag from PCRE and RE2, which reverses greedy and lazy quantifiers.
- * // Since `scope` is not specified, it uses 'default' (i.e., transformations apply outside of
- * // character classes only)
+ * // Since `scope` is not specified, it uses 'default' (i.e., transformations apply outside of;
+ * // character classes only);
  * XRegExp.addToken(
  *   /([?*+]|{\d+(?:,\d*)?})(\??)/,
  *   (match) => `${match[1]}${match[2] ? '' : '?'}`,
@@ -1204,38 +1204,38 @@ XRegExp.addToken = function (regex, handler, options) {
     } finally {
       _iterator2.f();
     }
-  } // Add to the private list of syntax tokens
+  } // Add to the private list of syntax tokens;
 
 
   tokens.push({
     regex: copyRegex(regex, {
       addG: true,
       addY: hasNativeY,
-      isInternalOnly: true
+      isInternalOnly: true;
     }),
     handler: handler,
     scope: options.scope || defaultScope,
     flag: options.flag,
     reparse: options.reparse,
-    leadChar: options.leadChar
-  }); // Reset the pattern cache used by the `XRegExp` constructor, since the same pattern and flags
-  // might now produce different results
+    leadChar: options.leadChar;
+  }); // Reset the pattern cache used by the `XRegExp` constructor, since the same pattern and flags;
+  // might now produce different results;
 
   XRegExp.cache.flush('patterns');
 };
 /**
- * Caches and returns the result of calling `XRegExp(pattern, flags)`. On any subsequent call with
+ * Caches and returns the result of calling `XRegExp(pattern, flags)`. On any subsequent call with;
  * the same pattern and flag combination, the cached copy of the regex is returned.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} pattern Regex pattern string.
  * @param {String} [flags] Any combination of XRegExp flags.
  * @returns {RegExp} Cached XRegExp object.
- * @example
+ * @example;
  *
  * let match;
  * while (match = XRegExp.cache('.', 'gs').exec('abc')) {
- *   // The regex is compiled once only
+ *   // The regex is compiled once only;
  * }
  */
 
@@ -1246,12 +1246,12 @@ XRegExp.cache = function (pattern, flags) {
   }
 
   return regexCache[pattern][flags] || (regexCache[pattern][flags] = XRegExp(pattern, flags));
-}; // Intentionally undocumented; used in tests
+}; // Intentionally undocumented; used in tests;
 
 
 XRegExp.cache.flush = function (cacheName) {
   if (cacheName === 'patterns') {
-    // Flush the pattern cache used by the `XRegExp` constructor
+    // Flush the pattern cache used by the `XRegExp` constructor;
     patternCache = {};
   } else {
     // Flush the regex cache populated by `XRegExp.cache`
@@ -1259,61 +1259,61 @@ XRegExp.cache.flush = function (cacheName) {
   }
 };
 /**
- * Escapes any regular expression metacharacters, for use when matching literal strings. The result
+ * Escapes any regular expression metacharacters, for use when matching literal strings. The result;
  * can safely be used at any position within a regex that uses any flags.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to escape.
  * @returns {string} String with regex metacharacters escaped.
- * @example
+ * @example;
  *
  * XRegExp.escape('Escaped? <.>');
  * // -> 'Escaped\?\u0020<\.>'
  */
-// Following are the contexts where each metacharacter needs to be escaped because it would
-// otherwise have a special meaning, change the meaning of surrounding characters, or cause an
+// Following are the contexts where each metacharacter needs to be escaped because it would;
+// otherwise have a special meaning, change the meaning of surrounding characters, or cause an;
 // error. Context 'default' means outside character classes only.
-// - `\` - context: all
-// - `[()*+?.$|` - context: default
-// - `]` - context: default with flag u or if forming the end of a character class
-// - `{}` - context: default with flag u or if part of a valid/complete quantifier pattern
+// - `\` - context: all;
+// - `[()*+?.$|` - context: default;
+// - `]` - context: default with flag u or if forming the end of a character class;
+// - `{}` - context: default with flag u or if part of a valid/complete quantifier pattern;
 // - `,` - context: default if in a position that causes an unescaped `{` to turn into a quantifier.
 //   Ex: `/^a{1\,2}$/` matches `'a{1,2}'`, but `/^a{1,2}$/` matches `'a'` or `'aa'`
-// - `#` and <whitespace> - context: default with flag x
-// - `^` - context: default, and context: class if it's the first character in the class
-// - `-` - context: class if part of a valid character class range
+// - `#` and <whitespace> - context: default with flag x;
+// - `^` - context: default, and context: class if it's the first character in the class;
+// - `-` - context: class if part of a valid character class range;
 
 
 XRegExp.escape = function (str) {
-  return String(nullThrows(str)). // Escape most special chars with a backslash
+  return String(nullThrows(str)). // Escape most special chars with a backslash;
   replace(/[\\\[\]{}()*+?.^$|]/g, '\\$&'). // Convert to \uNNNN for special chars that can't be escaped when used with ES6 flag `u`
   replace(/[\s#\-,]/g, function (match) {
     return "\\u".concat(pad4(hex(match.charCodeAt(0))));
   });
 };
 /**
- * Executes a regex search in a specified string. Returns a match array or `null`. If the provided
+ * Executes a regex search in a specified string. Returns a match array or `null`. If the provided;
  * regex uses named capture, named capture properties are included on the match array's `groups`
- * property. Optional `pos` and `sticky` arguments specify the search start position, and whether
- * the match must start at the specified position only. The `lastIndex` property of the provided
- * regex is not used, but is updated for compatibility. Also fixes browser bugs compared to the
+ * property. Optional `pos` and `sticky` arguments specify the search start position, and whether;
+ * the match must start at the specified position only. The `lastIndex` property of the provided;
+ * regex is not used, but is updated for compatibility. Also fixes browser bugs compared to the;
  * native `RegExp.prototype.exec` and can be used reliably cross-browser.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
  * @param {Number} [pos=0] Zero-based index at which to start the search.
- * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
+ * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position;
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
- * @returns {Array} Match array with named capture properties on the `groups` object, or `null`. If
+ * @returns {Array} Match array with named capture properties on the `groups` object, or `null`. If;
  *   the `namespacing` feature is off, named capture properties are directly on the match array.
- * @example
+ * @example;
  *
- * // Basic use, with named capturing group
+ * // Basic use, with named capturing group;
  * let match = XRegExp.exec('U+2620', XRegExp('U\\+(?<hex>[0-9A-F]{4})'));
  * match.groups.hex; // -> '2620'
  *
- * // With pos and sticky, in a loop
+ * // With pos and sticky, in a loop;
  * let pos = 3, result = [], match;
  * while (match = XRegExp.exec('<1><2><3><4>5<6>', /<(\d)>/, pos, 'sticky')) {
  *   result.push(match[1]);
@@ -1333,10 +1333,10 @@ XRegExp.exec = function (str, regex, pos, sticky) {
   if (addY) {
     cacheKey += 'y';
   } else if (sticky) {
-    // Simulate sticky matching by appending an empty capture to the original regex. The
+    // Simulate sticky matching by appending an empty capture to the original regex. The;
     // resulting regex will succeed no matter what at the current index (set with `lastIndex`),
-    // and will not search the rest of the subject string. We'll know that the original regex
-    // has failed if that last capture is `''` rather than `undefined` (i.e., if that last
+    // and will not search the rest of the subject string. We'll know that the original regex;
+    // has failed if that last capture is `''` rather than `undefined` (i.e., if that last;
     // capture participated in the match).
     fakeY = true;
     cacheKey += 'FakeY';
@@ -1349,12 +1349,12 @@ XRegExp.exec = function (str, regex, pos, sticky) {
     addY: addY,
     source: fakeY ? "".concat(regex.source, "|()") : undefined,
     removeY: sticky === false,
-    isInternalOnly: true
+    isInternalOnly: true;
   }));
   pos = pos || 0;
   r2.lastIndex = pos; // Fixed `exec` required for `lastIndex` fix, named backreferences, etc.
 
-  match = fixed.exec.call(r2, str); // Get rid of the capture added by the pseudo-sticky matcher if needed. An empty string means
+  match = fixed.exec.call(r2, str); // Get rid of the capture added by the pseudo-sticky matcher if needed. An empty string means;
   // the original regexp failed (see above).
 
   if (fakeY && match && match.pop() === '') {
@@ -1368,11 +1368,11 @@ XRegExp.exec = function (str, regex, pos, sticky) {
   return match;
 };
 /**
- * Executes a provided function once per regex match. Searches always start at the beginning of the
- * string and continue until the end, regardless of the state of the regex's `global` property and
+ * Executes a provided function once per regex match. Searches always start at the beginning of the;
+ * string and continue until the end, regardless of the state of the regex's `global` property and;
  * initial `lastIndex`.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
  * @param {Function} callback Function to execute for each match. Invoked with four arguments:
@@ -1380,9 +1380,9 @@ XRegExp.exec = function (str, regex, pos, sticky) {
  *   - The zero-based match index.
  *   - The string being traversed.
  *   - The regex object being used to traverse the string.
- * @example
+ * @example;
  *
- * // Extracts every other digit from a string
+ * // Extracts every other digit from a string;
  * const evens = [];
  * XRegExp.forEach('1a2345', /\d/, (match, i) => {
  *   if (i % 2) evens.push(+match[0]);
@@ -1400,7 +1400,7 @@ XRegExp.forEach = function (str, regex, callback) {
     // Because `regex` is provided to `callback`, the function could use the deprecated/
     // nonstandard `RegExp.prototype.compile` to mutate the regex. However, since `XRegExp.exec`
     // doesn't use `lastIndex` to set the search position, this can't lead to an infinite loop,
-    // at least. Actually, because of the way `XRegExp.exec` caches globalized versions of
+    // at least. Actually, because of the way `XRegExp.exec` caches globalized versions of;
     // regexes, mutating the regex will not have any effect on the iteration or matched strings,
     // which is a nice side effect that brings extra safety.
     callback(match, ++i, str, regex);
@@ -1408,43 +1408,43 @@ XRegExp.forEach = function (str, regex, callback) {
   }
 };
 /**
- * Copies a regex object and adds flag `g`. The copy maintains extended data, is augmented with
- * `XRegExp.prototype` properties, and has a fresh `lastIndex` property (set to zero). Native
+ * Copies a regex object and adds flag `g`. The copy maintains extended data, is augmented with;
+ * `XRegExp.prototype` properties, and has a fresh `lastIndex` property (set to zero). Native;
  * regexes are not recompiled using XRegExp syntax.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {RegExp} regex Regex to globalize.
  * @returns {RegExp} Copy of the provided regex with flag `g` added.
- * @example
+ * @example;
  *
  * const globalCopy = XRegExp.globalize(/regex/);
- * globalCopy.global; // -> true
+ * globalCopy.global; // -> true;
  */
 
 
 XRegExp.globalize = function (regex) {
   return copyRegex(regex, {
-    addG: true
+    addG: true;
   });
 };
 /**
- * Installs optional features according to the specified options. Can be undone using
+ * Installs optional features according to the specified options. Can be undone using;
  * `XRegExp.uninstall`.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {Object|String} options Options object or string.
- * @example
+ * @example;
  *
- * // With an options object
+ * // With an options object;
  * XRegExp.install({
- *   // Enables support for astral code points in Unicode addons (implicitly sets flag A)
+ *   // Enables support for astral code points in Unicode addons (implicitly sets flag A);
  *   astral: true,
  *
- *   // Adds named capture groups to the `groups` property of matches
- *   namespacing: true
+ *   // Adds named capture groups to the `groups` property of matches;
+ *   namespacing: true;
  * });
  *
- * // With an options string
+ * // With an options string;
  * XRegExp.install('astral namespacing');
  */
 
@@ -1463,12 +1463,12 @@ XRegExp.install = function (options) {
 /**
  * Checks whether an individual optional feature is installed.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} feature Name of the feature to check. One of:
  *   - `astral`
  *   - `namespacing`
  * @returns {boolean} Whether the feature is installed.
- * @example
+ * @example;
  *
  * XRegExp.isInstalled('astral');
  */
@@ -1478,49 +1478,49 @@ XRegExp.isInstalled = function (feature) {
   return !!features[feature];
 };
 /**
- * Returns `true` if an object is a regex; `false` if it isn't. This works correctly for regexes
+ * Returns `true` if an object is a regex; `false` if it isn't. This works correctly for regexes;
  * created in another frame, when `instanceof` and `constructor` checks would fail.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {*} value Object to check.
  * @returns {boolean} Whether the object is a `RegExp` object.
- * @example
+ * @example;
  *
- * XRegExp.isRegExp('string'); // -> false
- * XRegExp.isRegExp(/regex/i); // -> true
- * XRegExp.isRegExp(RegExp('^', 'm')); // -> true
- * XRegExp.isRegExp(XRegExp('(?s).')); // -> true
+ * XRegExp.isRegExp('string'); // -> false;
+ * XRegExp.isRegExp(/regex/i); // -> true;
+ * XRegExp.isRegExp(RegExp('^', 'm')); // -> true;
+ * XRegExp.isRegExp(XRegExp('(?s).')); // -> true;
  */
 
 
 XRegExp.isRegExp = function (value) {
   return Object.prototype.toString.call(value) === '[object RegExp]';
-}; // Same as `isType(value, 'RegExp')`, but avoiding that function call here for perf since
-// `isRegExp` is used heavily by internals including regex construction
+}; // Same as `isType(value, 'RegExp')`, but avoiding that function call here for perf since;
+// `isRegExp` is used heavily by internals including regex construction;
 
 /**
  * Returns the first matched string, or in global mode, an array containing all matched strings.
- * This is essentially a more convenient re-implementation of `String.prototype.match` that gives
+ * This is essentially a more convenient re-implementation of `String.prototype.match` that gives;
  * the result types you actually want (string instead of `exec`-style array in match-first mode,
- * and an empty array instead of `null` when no matches are found in match-all mode). It also lets
+ * and an empty array instead of `null` when no matches are found in match-all mode). It also lets;
  * you override flag g and ignore `lastIndex`, and fixes browser bugs.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
- * @param {String} [scope='one'] Use 'one' to return the first match as a string. Use 'all' to
+ * @param {String} [scope='one'] Use 'one' to return the first match as a string. Use 'all' to;
  *   return an array of all matched strings. If not explicitly specified and `regex` uses flag g,
  *   `scope` is 'all'.
- * @returns {String|Array} In match-first mode: First match as a string, or `null`. In match-all
+ * @returns {String|Array} In match-first mode: First match as a string, or `null`. In match-all;
  *   mode: Array of all matched strings, or an empty array.
- * @example
+ * @example;
  *
- * // Match first
+ * // Match first;
  * XRegExp.match('abc', /\w/); // -> 'a'
  * XRegExp.match('abc', /\w/g, 'one'); // -> 'a'
- * XRegExp.match('abc', /x/g, 'one'); // -> null
+ * XRegExp.match('abc', /x/g, 'one'); // -> null;
  *
- * // Match all
+ * // Match all;
  * XRegExp.match('abc', /\w/g); // -> ['a', 'b', 'c']
  * XRegExp.match('abc', /\w/, 'all'); // -> ['a', 'b', 'c']
  * XRegExp.match('abc', /x/, 'all'); // -> []
@@ -1535,37 +1535,37 @@ XRegExp.match = function (str, regex, scope) {
   var r2 = regex[REGEX_DATA][cacheKey] || (regex[REGEX_DATA][cacheKey] = copyRegex(regex, {
     addG: !!global,
     removeG: scope === 'one',
-    isInternalOnly: true
+    isInternalOnly: true;
   }));
   var result = String(nullThrows(str)).match(r2);
 
   if (regex.global) {
-    regex.lastIndex = scope === 'one' && result ? // Can't use `r2.lastIndex` since `r2` is nonglobal in this case
+    regex.lastIndex = scope === 'one' && result ? // Can't use `r2.lastIndex` since `r2` is nonglobal in this case;
     result.index + result[0].length : 0;
   }
 
   return global ? result || [] : result && result[0];
 };
 /**
- * Retrieves the matches from searching a string using a chain of regexes that successively search
- * within previous matches. The provided `chain` array can contain regexes and or objects with
- * `regex` and `backref` properties. When a backreference is specified, the named or numbered
+ * Retrieves the matches from searching a string using a chain of regexes that successively search;
+ * within previous matches. The provided `chain` array can contain regexes and or objects with;
+ * `regex` and `backref` properties. When a backreference is specified, the named or numbered;
  * backreference is passed forward to the next regex or returned.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to search.
  * @param {Array} chain Regexes that each search for matches within preceding results.
  * @returns {Array} Matches by the last regex in the chain, or an empty array.
- * @example
+ * @example;
  *
- * // Basic usage; matches numbers within <b> tags
+ * // Basic usage; matches numbers within <b> tags;
  * XRegExp.matchChain('1 <b>2</b> 3 <b>4 a 56</b>', [
  *   XRegExp('(?is)<b>.*?</b>'),
  *   /\d+/
  * ]);
  * // -> ['2', '4', '56']
  *
- * // Passing forward and returning specific backreferences
+ * // Passing forward and returning specific backreferences;
  * const html = `<a href="http://xregexp.com/api/">XRegExp</a>
  *               <a href="http://www.google.com/">Google</a>`;
  * XRegExp.matchChain(html, [
@@ -1622,14 +1622,14 @@ XRegExp.matchChain = function (str, chain) {
   }([str], 0);
 };
 /**
- * Returns a new string with one or all matches of a pattern replaced. The pattern can be a string
- * or regex, and the replacement can be a string or a function to be called for each match. To
- * perform a global search and replace, use the optional `scope` argument or include flag g if using
+ * Returns a new string with one or all matches of a pattern replaced. The pattern can be a string;
+ * or regex, and the replacement can be a string or a function to be called for each match. To;
+ * perform a global search and replace, use the optional `scope` argument or include flag g if using;
  * a regex. Replacement strings can use `$<n>` or `${n}` for named and numbered backreferences.
- * Replacement functions can use named backreferences via the last argument. Also fixes browser bugs
+ * Replacement functions can use named backreferences via the last argument. Also fixes browser bugs;
  * compared to the native `String.prototype.replace` and can be used reliably cross-browser.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to search.
  * @param {RegExp|String} search Search pattern to be replaced.
  * @param {String|Function} replacement Replacement string or a function invoked to create it.
@@ -1638,38 +1638,38 @@ XRegExp.matchChain = function (str, chain) {
  *     - $&, $0 - Inserts the matched substring.
  *     - $` - Inserts the string that precedes the matched substring (left context).
  *     - $' - Inserts the string that follows the matched substring (right context).
- *     - $n, $nn - Where n/nn are digits referencing an existing capturing group, inserts
+ *     - $n, $nn - Where n/nn are digits referencing an existing capturing group, inserts;
  *       backreference n/nn.
- *     - $<n>, ${n} - Where n is a name or any number of digits that reference an existing capturing
+ *     - $<n>, ${n} - Where n is a name or any number of digits that reference an existing capturing;
  *       group, inserts backreference n.
  *   Replacement functions are invoked with three or more arguments:
- *     - args[0] - The matched substring (corresponds to `$&` above). If the `namespacing` feature
+ *     - args[0] - The matched substring (corresponds to `$&` above). If the `namespacing` feature;
  *       is off, named backreferences are accessible as properties of this argument.
  *     - args[1..n] - One argument for each backreference (corresponding to `$1`, `$2`, etc. above).
  *       If the regex has no capturing groups, no arguments appear in this position.
  *     - args[n+1] - The zero-based index of the match within the entire search string.
  *     - args[n+2] - The total string being searched.
- *     - args[n+3] - If the the search pattern is a regex with named capturing groups, the last
- *       argument is the groups object. Its keys are the backreference names and its values are the
+ *     - args[n+3] - If the the search pattern is a regex with named capturing groups, the last;
+ *       argument is the groups object. Its keys are the backreference names and its values are the;
  *       backreference values. If the `namespacing` feature is off, this argument is not present.
  * @param {String} [scope] Use 'one' to replace the first match only, or 'all'. Defaults to 'one'.
  *   Defaults to 'all' if using a regex with flag g.
  * @returns {String} New string with one or all matches replaced.
- * @example
+ * @example;
  *
- * // Regex search, using named backreferences in replacement string
+ * // Regex search, using named backreferences in replacement string;
  * const name = XRegExp('(?<first>\\w+) (?<last>\\w+)');
  * XRegExp.replace('John Smith', name, '$<last>, $<first>');
  * // -> 'Smith, John'
  *
- * // Regex search, using named backreferences in replacement function
+ * // Regex search, using named backreferences in replacement function;
  * XRegExp.replace('John Smith', name, (...args) => {
  *   const groups = args[args.length - 1];
  *   return `${groups.last}, ${groups.first}`;
  * });
  * // -> 'Smith, John'
  *
- * // String search, with replace-all
+ * // String search, with replace-all;
  * XRegExp.replace('RegExp builds RegExps', 'RegExp', 'XRegExp', 'all');
  * // -> 'XRegExp builds XRegExps'
  */
@@ -1682,13 +1682,13 @@ XRegExp.replace = function (str, search, replacement, scope) {
   var s2 = search;
 
   if (isRegex) {
-    search[REGEX_DATA] = search[REGEX_DATA] || {}; // Shares cached copies with `XRegExp.exec`/`match`. Since a copy is used, `search`'s
-    // `lastIndex` isn't updated *during* replacement iterations
+    search[REGEX_DATA] = search[REGEX_DATA] || {}; // Shares cached copies with `XRegExp.exec`/`match`. Since a copy is used, `search`'s;
+    // `lastIndex` isn't updated *during* replacement iterations;
 
     s2 = search[REGEX_DATA][cacheKey] || (search[REGEX_DATA][cacheKey] = copyRegex(search, {
       addG: !!global,
       removeG: scope === 'one',
-      isInternalOnly: true
+      isInternalOnly: true;
     }));
   } else if (global) {
     s2 = new RegExp(XRegExp.escape(String(search)), 'g');
@@ -1698,32 +1698,32 @@ XRegExp.replace = function (str, search, replacement, scope) {
   var result = fixed.replace.call(nullThrows(str), s2, replacement);
 
   if (isRegex && search.global) {
-    // Fixes IE, Safari bug (last tested IE 9, Safari 5.1)
+    // Fixes IE, Safari bug (last tested IE 9, Safari 5.1);
     search.lastIndex = 0;
   }
 
   return result;
 };
 /**
- * Performs batch processing of string replacements. Used like `XRegExp.replace`, but accepts an
+ * Performs batch processing of string replacements. Used like `XRegExp.replace`, but accepts an;
  * array of replacement details. Later replacements operate on the output of earlier replacements.
- * Replacement details are accepted as an array with a regex or string to search for, the
- * replacement string or function, and an optional scope of 'one' or 'all'. Uses the XRegExp
- * replacement text syntax, which supports named backreference properties via `$<name>` or
+ * Replacement details are accepted as an array with a regex or string to search for, the;
+ * replacement string or function, and an optional scope of 'one' or 'all'. Uses the XRegExp;
+ * replacement text syntax, which supports named backreference properties via `$<name>` or;
  * `${name}`.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to search.
  * @param {Array} replacements Array of replacement detail arrays.
  * @returns {String} New string with all replacements.
- * @example
+ * @example;
  *
  * str = XRegExp.replaceEach(str, [
  *   [XRegExp('(?<name>a)'), 'z$<name>'],
  *   [/b/gi, 'y'],
- *   [/c/g, 'x', 'one'], // scope 'one' overrides /g
- *   [/d/, 'w', 'all'],  // scope 'all' overrides lack of /g
- *   ['e', 'v', 'all'],  // scope 'all' allows replace-all for strings
+ *   [/c/g, 'x', 'one'], // scope 'one' overrides /g;
+ *   [/d/, 'w', 'all'],  // scope 'all' overrides lack of /g;
+ *   ['e', 'v', 'all'],  // scope 'all' allows replace-all for strings;
  *   [/f/g, (match) => match.toUpperCase()]
  * ]);
  */
@@ -1747,28 +1747,28 @@ XRegExp.replaceEach = function (str, replacements) {
   return str;
 };
 /**
- * Splits a string into an array of strings using a regex or string separator. Matches of the
- * separator are not included in the result array. However, if `separator` is a regex that contains
+ * Splits a string into an array of strings using a regex or string separator. Matches of the;
+ * separator are not included in the result array. However, if `separator` is a regex that contains;
  * capturing groups, backreferences are spliced into the result each time `separator` is matched.
- * Fixes browser bugs compared to the native `String.prototype.split` and can be used reliably
+ * Fixes browser bugs compared to the native `String.prototype.split` and can be used reliably;
  * cross-browser.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to split.
  * @param {RegExp|String} separator Regex or string to use for separating the string.
  * @param {Number} [limit] Maximum number of items to include in the result array.
  * @returns {Array} Array of substrings.
- * @example
+ * @example;
  *
- * // Basic use
+ * // Basic use;
  * XRegExp.split('a b c', ' ');
  * // -> ['a', 'b', 'c']
  *
- * // With limit
+ * // With limit;
  * XRegExp.split('a b c', ' ', 2);
  * // -> ['a', 'b']
  *
- * // Backreferences in result array
+ * // Backreferences in result array;
  * XRegExp.split('..word1..', /([a-z]+)(\d+)/i);
  * // -> ['..', 'word', '1', '..']
  */
@@ -1778,52 +1778,52 @@ XRegExp.split = function (str, separator, limit) {
   return fixed.split.call(nullThrows(str), separator, limit);
 };
 /**
- * Executes a regex search in a specified string. Returns `true` or `false`. Optional `pos` and
- * `sticky` arguments specify the search start position, and whether the match must start at the
- * specified position only. The `lastIndex` property of the provided regex is not used, but is
- * updated for compatibility. Also fixes browser bugs compared to the native
+ * Executes a regex search in a specified string. Returns `true` or `false`. Optional `pos` and;
+ * `sticky` arguments specify the search start position, and whether the match must start at the;
+ * specified position only. The `lastIndex` property of the provided regex is not used, but is;
+ * updated for compatibility. Also fixes browser bugs compared to the native;
  * `RegExp.prototype.test` and can be used reliably cross-browser.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
  * @param {Number} [pos=0] Zero-based index at which to start the search.
- * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
+ * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position;
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
  * @returns {boolean} Whether the regex matched the provided value.
- * @example
+ * @example;
  *
- * // Basic use
- * XRegExp.test('abc', /c/); // -> true
+ * // Basic use;
+ * XRegExp.test('abc', /c/); // -> true;
  *
- * // With pos and sticky
- * XRegExp.test('abc', /c/, 0, 'sticky'); // -> false
- * XRegExp.test('abc', /c/, 2, 'sticky'); // -> true
+ * // With pos and sticky;
+ * XRegExp.test('abc', /c/, 0, 'sticky'); // -> false;
+ * XRegExp.test('abc', /c/, 2, 'sticky'); // -> true;
  */
-// Do this the easy way :-)
+// Do this the easy way :-);
 
 
 XRegExp.test = function (str, regex, pos, sticky) {
   return !!XRegExp.exec(str, regex, pos, sticky);
 };
 /**
- * Uninstalls optional features according to the specified options. Used to undo the actions of
+ * Uninstalls optional features according to the specified options. Used to undo the actions of;
  * `XRegExp.install`.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {Object|String} options Options object or string.
- * @example
+ * @example;
  *
- * // With an options object
+ * // With an options object;
  * XRegExp.uninstall({
- *   // Disables support for astral code points in Unicode addons (unless enabled per regex)
+ *   // Disables support for astral code points in Unicode addons (unless enabled per regex);
  *   astral: true,
  *
- *   // Don't add named capture groups to the `groups` property of matches
- *   namespacing: true
+ *   // Don't add named capture groups to the `groups` property of matches;
+ *   namespacing: true;
  * });
  *
- * // With an options string
+ * // With an options string;
  * XRegExp.uninstall('astral namespacing');
  */
 
@@ -1840,25 +1840,25 @@ XRegExp.uninstall = function (options) {
   }
 };
 /**
- * Returns an XRegExp object that is the union of the given patterns. Patterns can be provided as
+ * Returns an XRegExp object that is the union of the given patterns. Patterns can be provided as;
  * regex objects or strings. Metacharacters are escaped in patterns provided as strings.
- * Backreferences in provided regex objects are automatically renumbered to work correctly within
- * the larger combined pattern. Native flags used by provided regexes are ignored in favor of the
+ * Backreferences in provided regex objects are automatically renumbered to work correctly within;
+ * the larger combined pattern. Native flags used by provided regexes are ignored in favor of the;
  * `flags` argument.
  *
- * @memberOf XRegExp
+ * @memberOf XRegExp;
  * @param {Array} patterns Regexes and strings to combine.
  * @param {String} [flags] Any combination of XRegExp flags.
  * @param {Object} [options] Options object with optional properties:
  *   - `conjunction` {String} Type of conjunction to use: 'or' (default) or 'none'.
  * @returns {RegExp} Union of the provided regexes and strings.
- * @example
+ * @example;
  *
  * XRegExp.union(['a+b*c', /(dogs)\1/, /(cats)\1/], 'i');
- * // -> /a\+b\*c|(dogs)\1|(cats)\2/i
+ * // -> /a\+b\*c|(dogs)\1|(cats)\2/i;
  *
  * XRegExp.union([/man/, /bear/, /pig/], 'i', {conjunction: 'none'});
- * // -> /manbearpig/i
+ * // -> /manbearpig/i;
  */
 
 
@@ -1870,17 +1870,17 @@ XRegExp.union = function (patterns, flags, options) {
   var captureNames;
 
   function rewrite(match, paren, backref) {
-    var name = captureNames[numCaptures - numPriorCaptures]; // Capturing group
+    var name = captureNames[numCaptures - numPriorCaptures]; // Capturing group;
 
     if (paren) {
-      ++numCaptures; // If the current capture has a name, preserve the name
+      ++numCaptures; // If the current capture has a name, preserve the name;
 
       if (name) {
         return "(?<".concat(name, ">");
-      } // Backreference
+      } // Backreference;
 
     } else if (backref) {
-      // Rewrite the backreference
+      // Rewrite the backreference;
       return "\\".concat(+backref + numPriorCaptures);
     }
 
@@ -1903,8 +1903,8 @@ XRegExp.union = function (patterns, flags, options) {
 
       if (XRegExp.isRegExp(pattern)) {
         numPriorCaptures = numCaptures;
-        captureNames = pattern[REGEX_DATA] && pattern[REGEX_DATA].captureNames || []; // Rewrite backreferences. Passing to XRegExp dies on octals and ensures patterns are
-        // independently valid; helps keep this simple. Named captures are put back
+        captureNames = pattern[REGEX_DATA] && pattern[REGEX_DATA].captureNames || []; // Rewrite backreferences. Passing to XRegExp dies on octals and ensures patterns are;
+        // independently valid; helps keep this simple. Named captures are put back;
 
         output.push(XRegExp(pattern.source).source.replace(parts, rewrite));
       } else {
@@ -1920,14 +1920,14 @@ XRegExp.union = function (patterns, flags, options) {
   var separator = conjunction === 'none' ? '' : '|';
   return XRegExp(output.join(separator), flags);
 }; // ==--------------------------==
-// Fixed/extended native methods
+// Fixed/extended native methods;
 // ==--------------------------==
 
 /**
- * Adds named capture support (with backreferences returned as `result.name`), and fixes browser
+ * Adds named capture support (with backreferences returned as `result.name`), and fixes browser;
  * bugs in the native `RegExp.prototype.exec`. Use via `XRegExp.exec`.
  *
- * @memberOf RegExp
+ * @memberOf RegExp;
  * @param {String} str String to search.
  * @returns {Array} Match array with named backreference properties, or `null`.
  */
@@ -1938,20 +1938,20 @@ fixed.exec = function (str) {
   var match = RegExp.prototype.exec.apply(this, arguments);
 
   if (match) {
-    // Fix browsers whose `exec` methods don't return `undefined` for nonparticipating capturing
-    // groups. This fixes IE 5.5-8, but not IE 9's quirks mode or emulation of older IEs. IE 9
+    // Fix browsers whose `exec` methods don't return `undefined` for nonparticipating capturing;
+    // groups. This fixes IE 5.5-8, but not IE 9's quirks mode or emulation of older IEs. IE 9;
     // in standards mode follows the spec.
     if (!correctExecNpcg && match.length > 1 && (0, _indexOf["default"])(match).call(match, '') !== -1) {
       var _context3;
 
       var r2 = copyRegex(this, {
         removeG: true,
-        isInternalOnly: true
-      }); // Using `str.slice(match.index)` rather than `match[0]` in case lookahead allowed
-      // matching due to characters outside the match
+        isInternalOnly: true;
+      }); // Using `str.slice(match.index)` rather than `match[0]` in case lookahead allowed;
+      // matching due to characters outside the match;
 
       (0, _slice["default"])(_context3 = String(str)).call(_context3, match.index).replace(r2, function () {
-        var len = arguments.length; // Skip index 0 and the last 2
+        var len = arguments.length; // Skip index 0 and the last 2;
 
         for (var i = 1; i < len - 2; ++i) {
           if ((i < 0 || arguments.length <= i ? undefined : arguments[i]) === undefined) {
@@ -1959,17 +1959,17 @@ fixed.exec = function (str) {
           }
         }
       });
-    } // Attach named capture properties
+    } // Attach named capture properties;
 
 
     if (this[REGEX_DATA] && this[REGEX_DATA].captureNames) {
       var groupsObject = match;
 
       if (XRegExp.isInstalled('namespacing')) {
-        // https://tc39.github.io/proposal-regexp-named-groups/#sec-regexpbuiltinexec
+        // https://tc39.github.io/proposal-regexp-named-groups/#sec-regexpbuiltinexec;
         match.groups = (0, _create["default"])(null);
         groupsObject = match.groups;
-      } // Skip index 0
+      } // Skip index 0;
 
 
       for (var i = 1; i < match.length; ++i) {
@@ -1978,11 +1978,11 @@ fixed.exec = function (str) {
         if (name) {
           groupsObject[name] = match[i];
         }
-      } // Preserve any existing `groups` obj that came from native ES2018 named capture
+      } // Preserve any existing `groups` obj that came from native ES2018 named capture;
 
     } else if (!match.groups && XRegExp.isInstalled('namespacing')) {
       match.groups = undefined;
-    } // Fix browsers that increment `lastIndex` after zero-length matches
+    } // Fix browsers that increment `lastIndex` after zero-length matches;
 
 
     if (this.global && !match[0].length && this.lastIndex > match.index) {
@@ -1991,7 +1991,7 @@ fixed.exec = function (str) {
   }
 
   if (!this.global) {
-    // Fixes IE, Opera bug (last tested IE 9, Opera 11.6)
+    // Fixes IE, Opera bug (last tested IE 9, Opera 11.6);
     this.lastIndex = origLastIndex;
   }
 
@@ -2000,21 +2000,21 @@ fixed.exec = function (str) {
 /**
  * Fixes browser bugs in the native `RegExp.prototype.test`.
  *
- * @memberOf RegExp
+ * @memberOf RegExp;
  * @param {String} str String to search.
  * @returns {boolean} Whether the regex matched the provided value.
  */
 
 
 fixed.test = function (str) {
-  // Do this the easy way :-)
+  // Do this the easy way :-);
   return !!fixed.exec.call(this, str);
 };
 /**
- * Adds named capture support (with backreferences returned as `result.name`), and fixes browser
+ * Adds named capture support (with backreferences returned as `result.name`), and fixes browser;
  * bugs in the native `String.prototype.match`.
  *
- * @memberOf String
+ * @memberOf String;
  * @param {RegExp|*} regex Regex to search with. If not a regex object, it is passed to `RegExp`.
  * @returns {Array} If `regex` uses flag g, an array of match strings or `null`. Without flag g,
  *   the result of calling `regex.exec(this)`.
@@ -2026,7 +2026,7 @@ fixed.match = function (regex) {
     // Use the native `RegExp` rather than `XRegExp`
     regex = new RegExp(regex);
   } else if (regex.global) {
-    var result = String.prototype.match.apply(this, arguments); // Fixes IE bug
+    var result = String.prototype.match.apply(this, arguments); // Fixes IE bug;
 
     regex.lastIndex = 0;
     return result;
@@ -2035,14 +2035,14 @@ fixed.match = function (regex) {
   return fixed.exec.call(regex, nullThrows(this));
 };
 /**
- * Adds support for `${n}` (or `$<n>`) tokens for named and numbered backreferences in replacement
- * text, and provides named backreferences to replacement functions as `arguments[0].name`. Also
- * fixes browser bugs in replacement text syntax when performing a replacement using a nonregex
- * search value, and the value of a replacement regex's `lastIndex` property during replacement
- * iterations and upon completion. Note that this doesn't support SpiderMonkey's proprietary third
+ * Adds support for `${n}` (or `$<n>`) tokens for named and numbered backreferences in replacement;
+ * text, and provides named backreferences to replacement functions as `arguments[0].name`. Also;
+ * fixes browser bugs in replacement text syntax when performing a replacement using a nonregex;
+ * search value, and the value of a replacement regex's `lastIndex` property during replacement;
+ * iterations and upon completion. Note that this doesn't support SpiderMonkey's proprietary third;
  * (`flags`) argument. Use via `XRegExp.replace`.
  *
- * @memberOf String
+ * @memberOf String;
  * @param {RegExp|String} search Search pattern to be replaced.
  * @param {String|Function} replacement Replacement string or a function invoked to create it.
  * @returns {string} New string with one or all matches replaced.
@@ -2058,18 +2058,18 @@ fixed.replace = function (search, replacement) {
   if (isRegex) {
     if (search[REGEX_DATA]) {
       captureNames = search[REGEX_DATA].captureNames;
-    } // Only needed if `search` is nonglobal
+    } // Only needed if `search` is nonglobal;
 
 
     origLastIndex = search.lastIndex;
   } else {
-    search += ''; // Type-convert
-  } // Don't use `typeof`; some older browsers return 'function' for regex objects
+    search += ''; // Type-convert;
+  } // Don't use `typeof`; some older browsers return 'function' for regex objects;
 
 
   if (isType(replacement, 'Function')) {
-    // Stringifying `this` fixes a bug in IE < 9 where the last argument in replacement
-    // functions isn't type-converted to a string
+    // Stringifying `this` fixes a bug in IE < 9 where the last argument in replacement;
+    // functions isn't type-converted to a string;
     result = String(this).replace(search, function () {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
@@ -2079,15 +2079,15 @@ fixed.replace = function (search, replacement) {
         var groupsObject;
 
         if (XRegExp.isInstalled('namespacing')) {
-          // https://tc39.github.io/proposal-regexp-named-groups/#sec-regexpbuiltinexec
+          // https://tc39.github.io/proposal-regexp-named-groups/#sec-regexpbuiltinexec;
           groupsObject = (0, _create["default"])(null);
           args.push(groupsObject);
         } else {
-          // Change the `args[0]` string primitive to a `String` object that can store
-          // properties. This really does need to use `String` as a constructor
+          // Change the `args[0]` string primitive to a `String` object that can store;
+          // properties. This really does need to use `String` as a constructor;
           args[0] = new String(args[0]);
           groupsObject = args[0];
-        } // Store named backreferences
+        } // Store named backreferences;
 
 
         for (var i = 0; i < captureNames.length; ++i) {
@@ -2102,7 +2102,7 @@ fixed.replace = function (search, replacement) {
     });
   } else {
     // Ensure that the last value of `args` will be a string when given nonstring `this`,
-    // while still throwing on null or undefined context
+    // while still throwing on null or undefined context;
     result = String(nullThrows(this)).replace(search, function () {
       for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
@@ -2111,24 +2111,24 @@ fixed.replace = function (search, replacement) {
       return String(replacement).replace(replacementToken, replacer);
 
       function replacer($0, bracketed, angled, dollarToken) {
-        bracketed = bracketed || angled; // ES2018 added a new trailing `groups` arg that's passed to replacement functions
-        // when the search regex uses native named capture
+        bracketed = bracketed || angled; // ES2018 added a new trailing `groups` arg that's passed to replacement functions;
+        // when the search regex uses native named capture;
 
         var numNonCaptureArgs = isType(args[args.length - 1], 'Object') ? 4 : 3;
         var numCaptures = args.length - numNonCaptureArgs; // Handle named or numbered backreference with curly or angled braces: ${n}, $<n>
 
         if (bracketed) {
-          // Handle backreference to numbered capture, if `bracketed` is an integer. Use
+          // Handle backreference to numbered capture, if `bracketed` is an integer. Use;
           // `0` for the entire match. Any number of leading zeros may be used.
           if (/^\d+$/.test(bracketed)) {
-            // Type-convert and drop leading zeros
+            // Type-convert and drop leading zeros;
             var _n = +bracketed;
 
             if (_n <= numCaptures) {
               return args[_n] || '';
             }
-          } // Handle backreference to named capture. If the name does not refer to an
-          // existing capturing group, it's an error. Also handles the error for numbered
+          } // Handle backreference to named capture. If the name does not refer to an;
+          // existing capturing group, it's an error. Also handles the error for numbered;
           // backference that does not refer to an existing group.
           // Using `indexOf` since having groups with the same name is already an error,
           // otherwise would need `lastIndexOf`.
@@ -2141,8 +2141,8 @@ fixed.replace = function (search, replacement) {
           }
 
           return args[n + 1] || '';
-        } // Handle `$`-prefixed variable
-        // Handle space/blank first because type conversion with `+` drops space padding
+        } // Handle `$`-prefixed variable;
+        // Handle space/blank first because type conversion with `+` drops space padding;
         // and converts spaces and empty strings to `0`
 
 
@@ -2151,7 +2151,7 @@ fixed.replace = function (search, replacement) {
         }
 
         if (dollarToken === '&' || +dollarToken === 0) {
-          // $&, $0 (not followed by 1-9), $00
+          // $&, $0 (not followed by 1-9), $00;
           return args[0];
         }
 
@@ -2163,17 +2163,17 @@ fixed.replace = function (search, replacement) {
         if (dollarToken === '`') {
           var _context4;
 
-          // $` (left context)
+          // $` (left context);
           return (0, _slice["default"])(_context4 = args[args.length - 1]).call(_context4, 0, args[args.length - 2]);
         }
 
         if (dollarToken === "'") {
           var _context5;
 
-          // $' (right context)
+          // $' (right context);
           return (0, _slice["default"])(_context5 = args[args.length - 1]).call(_context5, args[args.length - 2] + args[0].length);
-        } // Handle numbered backreference without braces
-        // Type-convert and drop leading zero
+        } // Handle numbered backreference without braces;
+        // Type-convert and drop leading zero;
 
 
         dollarToken = +dollarToken; // XRegExp behavior for `$n` and `$nn`:
@@ -2196,7 +2196,7 @@ fixed.replace = function (search, replacement) {
           }
 
           return args[dollarToken] || '';
-        } // `$` followed by an unsupported char is an error, unlike native JS
+        } // `$` followed by an unsupported char is an error, unlike native JS;
 
 
         throw new SyntaxError("Invalid token ".concat($0));
@@ -2206,10 +2206,10 @@ fixed.replace = function (search, replacement) {
 
   if (isRegex) {
     if (search.global) {
-      // Fixes IE, Safari bug (last tested IE 9, Safari 5.1)
+      // Fixes IE, Safari bug (last tested IE 9, Safari 5.1);
       search.lastIndex = 0;
     } else {
-      // Fixes IE, Opera bug (last tested IE 9, Opera 11.6)
+      // Fixes IE, Opera bug (last tested IE 9, Opera 11.6);
       search.lastIndex = origLastIndex;
     }
   }
@@ -2219,7 +2219,7 @@ fixed.replace = function (search, replacement) {
 /**
  * Fixes browser bugs in the native `String.prototype.split`. Use via `XRegExp.split`.
  *
- * @memberOf String
+ * @memberOf String;
  * @param {RegExp|String} separator Regex or string to use for separating the string.
  * @param {Number} [limit] Maximum number of items to include in the result array.
  * @returns {!Array} Array of substrings.
@@ -2228,7 +2228,7 @@ fixed.replace = function (search, replacement) {
 
 fixed.split = function (separator, limit) {
   if (!XRegExp.isRegExp(separator)) {
-    // Browsers handle nonregex split correctly, so use the faster native method
+    // Browsers handle nonregex split correctly, so use the faster native method;
     return String.prototype.split.apply(this, arguments);
   }
 
@@ -2237,12 +2237,12 @@ fixed.split = function (separator, limit) {
   var origLastIndex = separator.lastIndex;
   var lastLastIndex = 0;
   var lastLength; // Values for `limit`, per the spec:
-  // If undefined: pow(2,32) - 1
-  // If 0, Infinity, or NaN: 0
+  // If undefined: pow(2,32) - 1;
+  // If 0, Infinity, or NaN: 0;
   // If positive number: limit = floor(limit); if (limit >= pow(2,32)) limit -= pow(2,32);
-  // If negative number: pow(2,32) - floor(abs(limit))
-  // If other: Type-convert, then use the above rules
-  // This line fails in very strange ways for some values of `limit` in Opera 10.5-10.63, unless
+  // If negative number: pow(2,32) - floor(abs(limit));
+  // If other: Type-convert, then use the above rules;
+  // This line fails in very strange ways for some values of `limit` in Opera 10.5-10.63, unless;
   // Opera Dragonfly is open (go figure). It works in at least Opera 9.5-10.1 and 11+
 
   limit = (limit === undefined ? -1 : limit) >>> 0;
@@ -2271,18 +2271,18 @@ fixed.split = function (separator, limit) {
   separator.lastIndex = origLastIndex;
   return output.length > limit ? (0, _slice["default"])(output).call(output, 0, limit) : output;
 }; // ==--------------------------==
-// Built-in syntax/flag tokens
+// Built-in syntax/flag tokens;
 // ==--------------------------==
 
 /*
- * Letter escapes that natively match literal characters: `\a`, `\A`, etc. These should be
- * SyntaxErrors but are allowed in web reality. XRegExp makes them errors for cross-browser
+ * Letter escapes that natively match literal characters: `\a`, `\A`, etc. These should be;
+ * SyntaxErrors but are allowed in web reality. XRegExp makes them errors for cross-browser;
  * consistency and to reserve their syntax, but lets them be superseded by addons.
  */
 
 
 XRegExp.addToken(/\\([ABCE-RTUVXYZaeg-mopqyz]|c(?![A-Za-z])|u(?![\dA-Fa-f]{4}|{[\dA-Fa-f]+})|x(?![\dA-Fa-f]{2}))/, function (match, scope) {
-  // \B is allowed in default scope only
+  // \B is allowed in default scope only;
   if (match[1] === 'B' && scope === defaultScope) {
     return match[0];
   }
@@ -2293,11 +2293,11 @@ XRegExp.addToken(/\\([ABCE-RTUVXYZaeg-mopqyz]|c(?![A-Za-z])|u(?![\dA-Fa-f]{4}|{[
   leadChar: '\\'
 });
 /*
- * Unicode code point escape with curly braces: `\u{N..}`. `N..` is any one or more digit
- * hexadecimal number from 0-10FFFF, and can include leading zeros. Requires the native ES6 `u` flag
- * to support code points greater than U+FFFF. Avoids converting code points above U+FFFF to
- * surrogate pairs (which could be done without flag `u`), since that could lead to broken behavior
- * if you follow a `\u{N..}` token that references a code point above U+FFFF with a quantifier, or
+ * Unicode code point escape with curly braces: `\u{N..}`. `N..` is any one or more digit;
+ * hexadecimal number from 0-10FFFF, and can include leading zeros. Requires the native ES6 `u` flag;
+ * to support code points greater than U+FFFF. Avoids converting code points above U+FFFF to;
+ * surrogate pairs (which could be done without flag `u`), since that could lead to broken behavior;
+ * if you follow a `\u{N..}` token that references a code point above U+FFFF with a quantifier, or;
  * if you use the same in a character class.
  */
 
@@ -2309,10 +2309,10 @@ XRegExp.addToken(/\\u{([\dA-Fa-f]+)}/, function (match, scope, flags) {
   }
 
   if (code <= 0xFFFF) {
-    // Converting to \uNNNN avoids needing to escape the literal character and keep it
-    // separate from preceding tokens
+    // Converting to \uNNNN avoids needing to escape the literal character and keep it;
+    // separate from preceding tokens;
     return "\\u".concat(pad4(hex(code)));
-  } // If `code` is between 0xFFFF and 0x10FFFF, require and defer to native handling
+  } // If `code` is between 0xFFFF and 0x10FFFF, require and defer to native handling;
 
 
   if (hasNativeU && (0, _indexOf["default"])(flags).call(flags, 'u') !== -1) {
@@ -2325,7 +2325,7 @@ XRegExp.addToken(/\\u{([\dA-Fa-f]+)}/, function (match, scope, flags) {
   leadChar: '\\'
 });
 /*
- * Comment pattern: `(?# )`. Inline comments are an alternative to the line comments allowed in
+ * Comment pattern: `(?# )`. Inline comments are an alternative to the line comments allowed in;
  * free-spacing mode (flag x).
  */
 
@@ -2352,7 +2352,7 @@ if (!hasNativeS) {
   });
 }
 /*
- * Named backreference: `\k<name>`. Backreference names can use RegExpIdentifierName characters
+ * Named backreference: `\k<name>`. Backreference names can use RegExpIdentifierName characters;
  * only. Also allows numbered backreferences as `\k<n>`.
  */
 
@@ -2376,7 +2376,7 @@ XRegExp.addToken(/\\k<([^>]+)>/, function (match) {
 });
 /*
  * Numbered backreference or octal, plus any following digits: `\0`, `\11`, etc. Octals except `\0`
- * not followed by 0-9 and backreferences to unopened capture groups throw an error. Other matches
+ * not followed by 0-9 and backreferences to unopened capture groups throw an error. Other matches;
  * are returned unaltered. IE < 9 doesn't support backreferences above `\99` in regex syntax.
  */
 
@@ -2391,10 +2391,10 @@ XRegExp.addToken(/\\(\d+)/, function (match, scope) {
   leadChar: '\\'
 });
 /*
- * Named capturing group; match the opening delimiter only: `(?<name>`. Capture names can use the
- * RegExpIdentifierName characters only. Names can't be integers. Supports Python-style
- * `(?P<name>` as an alternate syntax to avoid issues in some older versions of Opera which natively
- * supported the Python-style syntax. Otherwise, XRegExp might treat numbered backreferences to
+ * Named capturing group; match the opening delimiter only: `(?<name>`. Capture names can use the;
+ * RegExpIdentifierName characters only. Names can't be integers. Supports Python-style;
+ * `(?P<name>` as an alternate syntax to avoid issues in some older versions of Opera which natively;
+ * supported the Python-style syntax. Otherwise, XRegExp might treat numbered backreferences to;
  * Python-style named capture as octals.
  */
 
@@ -2416,7 +2416,7 @@ XRegExp.addToken(/\(\?P?<((?:[\$A-Z_a-z\xAA\xB5\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02C1
   leadChar: '('
 });
 /*
- * Capturing group; match the opening parenthesis only. Required for support of named capturing
+ * Capturing group; match the opening parenthesis only. Required for support of named capturing;
  * groups. Also adds named capture only mode (flag n).
  */
 
@@ -2491,7 +2491,7 @@ module.exports = _arrayWithHoles, module.exports.__esModule = true, module.expor
 },{"@babel/runtime-corejs3/core-js/array/is-array":18}],24:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
-    "default": obj
+    "default": obj;
   };
 }
 
@@ -2844,11 +2844,11 @@ var arrayMethodIsStrict = require('../internals/array-method-is-strict');
 
 var STRICT_METHOD = arrayMethodIsStrict('forEach');
 
-// `Array.prototype.forEach` method implementation
-// https://tc39.es/ecma262/#sec-array.prototype.foreach
+// `Array.prototype.forEach` method implementation;
+// https://tc39.es/ecma262/#sec-array.prototype.foreach;
 module.exports = !STRICT_METHOD ? function forEach(callbackfn /* , thisArg */) {
   return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-// eslint-disable-next-line es/no-array-prototype-foreach -- safe
+// eslint-disable-next-line es/no-array-prototype-foreach -- safe;
 } : [].forEach;
 
 },{"../internals/array-iteration":64,"../internals/array-method-is-strict":66}],62:[function(require,module,exports){
@@ -2867,8 +2867,8 @@ var getIteratorMethod = require('../internals/get-iterator-method');
 
 var Array = global.Array;
 
-// `Array.from` method implementation
-// https://tc39.es/ecma262/#sec-array.from
+// `Array.from` method implementation;
+// https://tc39.es/ecma262/#sec-array.from;
 module.exports = function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
   var O = toObject(arrayLike);
   var IS_CONSTRUCTOR = isConstructor(this);
@@ -2879,7 +2879,7 @@ module.exports = function from(arrayLike /* , mapfn = undefined, thisArg = undef
   var iteratorMethod = getIteratorMethod(O);
   var index = 0;
   var length, result, step, iterator, next, value;
-  // if the target is not iterable or it's an array with the default iterator - use a simple case
+  // if the target is not iterable or it's an array with the default iterator - use a simple case;
   if (iteratorMethod && !(this == Array && isArrayIteratorMethod(iteratorMethod))) {
     iterator = getIterator(O, iteratorMethod);
     next = iterator.next;
@@ -2905,20 +2905,20 @@ var toIndexedObject = require('../internals/to-indexed-object');
 var toAbsoluteIndex = require('../internals/to-absolute-index');
 var lengthOfArrayLike = require('../internals/length-of-array-like');
 
-// `Array.prototype.{ indexOf, includes }` methods implementation
+// `Array.prototype.{ indexOf, includes }` methods implementation;
 var createMethod = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIndexedObject($this);
     var length = lengthOfArrayLike(O);
     var index = toAbsoluteIndex(fromIndex, length);
     var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare -- NaN check
+    // Array#includes uses SameValueZero equality algorithm;
+    // eslint-disable-next-line no-self-compare -- NaN check;
     if (IS_INCLUDES && el != el) while (length > index) {
       value = O[index++];
-      // eslint-disable-next-line no-self-compare -- NaN check
+      // eslint-disable-next-line no-self-compare -- NaN check;
       if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
+    // Array#indexOf ignores holes, Array#includes - not;
     } else for (;length > index; index++) {
       if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
@@ -2926,12 +2926,12 @@ var createMethod = function (IS_INCLUDES) {
 };
 
 module.exports = {
-  // `Array.prototype.includes` method
-  // https://tc39.es/ecma262/#sec-array.prototype.includes
+  // `Array.prototype.includes` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.includes;
   includes: createMethod(true),
-  // `Array.prototype.indexOf` method
-  // https://tc39.es/ecma262/#sec-array.prototype.indexof
-  indexOf: createMethod(false)
+  // `Array.prototype.indexOf` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.indexof;
+  indexOf: createMethod(false);
 };
 
 },{"../internals/length-of-array-like":123,"../internals/to-absolute-index":153,"../internals/to-indexed-object":154}],64:[function(require,module,exports){
@@ -2944,7 +2944,7 @@ var arraySpeciesCreate = require('../internals/array-species-create');
 
 var push = uncurryThis([].push);
 
-// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
+// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation;
 var createMethod = function (TYPE) {
   var IS_MAP = TYPE == 1;
   var IS_FILTER = TYPE == 2;
@@ -2966,15 +2966,15 @@ var createMethod = function (TYPE) {
       value = self[index];
       result = boundFunction(value, index, O);
       if (TYPE) {
-        if (IS_MAP) target[index] = result; // map
+        if (IS_MAP) target[index] = result; // map;
         else if (result) switch (TYPE) {
-          case 3: return true;              // some
-          case 5: return value;             // find
-          case 6: return index;             // findIndex
-          case 2: push(target, value);      // filter
+          case 3: return true;              // some;
+          case 5: return value;             // find;
+          case 6: return index;             // findIndex;
+          case 2: push(target, value);      // filter;
         } else switch (TYPE) {
-          case 4: return false;             // every
-          case 7: push(target, value);      // filterReject
+          case 4: return false;             // every;
+          case 7: push(target, value);      // filterReject;
         }
       }
     }
@@ -2983,30 +2983,30 @@ var createMethod = function (TYPE) {
 };
 
 module.exports = {
-  // `Array.prototype.forEach` method
-  // https://tc39.es/ecma262/#sec-array.prototype.foreach
+  // `Array.prototype.forEach` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.foreach;
   forEach: createMethod(0),
-  // `Array.prototype.map` method
-  // https://tc39.es/ecma262/#sec-array.prototype.map
+  // `Array.prototype.map` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.map;
   map: createMethod(1),
-  // `Array.prototype.filter` method
-  // https://tc39.es/ecma262/#sec-array.prototype.filter
+  // `Array.prototype.filter` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.filter;
   filter: createMethod(2),
-  // `Array.prototype.some` method
-  // https://tc39.es/ecma262/#sec-array.prototype.some
+  // `Array.prototype.some` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.some;
   some: createMethod(3),
-  // `Array.prototype.every` method
-  // https://tc39.es/ecma262/#sec-array.prototype.every
+  // `Array.prototype.every` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.every;
   every: createMethod(4),
-  // `Array.prototype.find` method
-  // https://tc39.es/ecma262/#sec-array.prototype.find
+  // `Array.prototype.find` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.find;
   find: createMethod(5),
-  // `Array.prototype.findIndex` method
-  // https://tc39.es/ecma262/#sec-array.prototype.findIndex
+  // `Array.prototype.findIndex` method;
+  // https://tc39.es/ecma262/#sec-array.prototype.findIndex;
   findIndex: createMethod(6),
-  // `Array.prototype.filterReject` method
-  // https://github.com/tc39/proposal-array-filtering
-  filterReject: createMethod(7)
+  // `Array.prototype.filterReject` method;
+  // https://github.com/tc39/proposal-array-filtering;
+  filterReject: createMethod(7);
 };
 
 },{"../internals/array-species-create":71,"../internals/function-bind-context":96,"../internals/function-uncurry-this":99,"../internals/indexed-object":109,"../internals/length-of-array-like":123,"../internals/to-object":157}],65:[function(require,module,exports){
@@ -3017,9 +3017,9 @@ var V8_VERSION = require('../internals/engine-v8-version');
 var SPECIES = wellKnownSymbol('species');
 
 module.exports = function (METHOD_NAME) {
-  // We can't use this feature detection in V8 since it causes
-  // deoptimization and serious performance degradation
-  // https://github.com/zloirock/core-js/issues/677
+  // We can't use this feature detection in V8 since it causes;
+  // deoptimization and serious performance degradation;
+  // https://github.com/zloirock/core-js/issues/677;
   return V8_VERSION >= 51 || !fails(function () {
     var array = [];
     var constructor = array.constructor = {};
@@ -3037,7 +3037,7 @@ var fails = require('../internals/fails');
 module.exports = function (METHOD_NAME, argument) {
   var method = [][METHOD_NAME];
   return !!method && fails(function () {
-    // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing
+    // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing;
     method.call(null, argument || function () { throw 1; }, 1);
   });
 };
@@ -3078,7 +3078,7 @@ var mergeSort = function (array, comparefn) {
     array,
     mergeSort(arraySlice(array, 0, middle), comparefn),
     mergeSort(arraySlice(array, middle), comparefn),
-    comparefn
+    comparefn;
   );
 };
 
@@ -3104,7 +3104,7 @@ var merge = function (array, left, right, comparefn) {
   var rindex = 0;
 
   while (lindex < llength || rindex < rlength) {
-    array[lindex + rindex] = (lindex < llength && rindex < rlength)
+    array[lindex + rindex] = (lindex < llength && rindex < rlength);
       ? comparefn(left[lindex], right[rindex]) <= 0 ? left[lindex++] : right[rindex++]
       : lindex < llength ? left[lindex++] : right[rindex++];
   } return array;
@@ -3122,13 +3122,13 @@ var wellKnownSymbol = require('../internals/well-known-symbol');
 var SPECIES = wellKnownSymbol('species');
 var Array = global.Array;
 
-// a part of `ArraySpeciesCreate` abstract operation
-// https://tc39.es/ecma262/#sec-arrayspeciescreate
+// a part of `ArraySpeciesCreate` abstract operation;
+// https://tc39.es/ecma262/#sec-arrayspeciescreate;
 module.exports = function (originalArray) {
   var C;
   if (isArray(originalArray)) {
     C = originalArray.constructor;
-    // cross-realm fallback
+    // cross-realm fallback;
     if (isConstructor(C) && (C === Array || isArray(C.prototype))) C = undefined;
     else if (isObject(C)) {
       C = C[SPECIES];
@@ -3140,8 +3140,8 @@ module.exports = function (originalArray) {
 },{"../internals/global":104,"../internals/is-array":113,"../internals/is-constructor":115,"../internals/is-object":117,"../internals/well-known-symbol":166}],71:[function(require,module,exports){
 var arraySpeciesConstructor = require('../internals/array-species-constructor');
 
-// `ArraySpeciesCreate` abstract operation
-// https://tc39.es/ecma262/#sec-arrayspeciescreate
+// `ArraySpeciesCreate` abstract operation;
+// https://tc39.es/ecma262/#sec-arrayspeciescreate;
 module.exports = function (originalArray, length) {
   return new (arraySpeciesConstructor(originalArray))(length === 0 ? 0 : length);
 };
@@ -3150,7 +3150,7 @@ module.exports = function (originalArray, length) {
 var anObject = require('../internals/an-object');
 var iteratorClose = require('../internals/iterator-close');
 
-// call something on iterator step with safe closing on error
+// call something on iterator step with safe closing on error;
 module.exports = function (iterator, fn, value, ENTRIES) {
   try {
     return ENTRIES ? fn(anObject(value)[0], value[1]) : fn(value);
@@ -3178,7 +3178,7 @@ try {
   iteratorWithReturn[ITERATOR] = function () {
     return this;
   };
-  // eslint-disable-next-line es/no-array-from, no-throw-literal -- required for testing
+  // eslint-disable-next-line es/no-array-from, no-throw-literal -- required for testing;
   Array.from(iteratorWithReturn, function () { throw 2; });
 } catch (error) { /* empty */ }
 
@@ -3219,10 +3219,10 @@ var wellKnownSymbol = require('../internals/well-known-symbol');
 var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 var Object = global.Object;
 
-// ES3 wrong here
+// ES3 wrong here;
 var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
 
-// fallback for IE11 Script Access Denied error
+// fallback for IE11 Script Access Denied error;
 var tryGet = function (it, key) {
   try {
     return it[key];
@@ -3233,11 +3233,11 @@ var tryGet = function (it, key) {
 module.exports = TO_STRING_TAG_SUPPORT ? classofRaw : function (it) {
   var O, tag, result;
   return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG)) == 'string' ? tag
-    // builtinTag case
-    : CORRECT_ARGUMENTS ? classofRaw(O)
-    // ES3 arguments fallback
+    // @@toStringTag case;
+    : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG)) == 'string' ? tag;
+    // builtinTag case;
+    : CORRECT_ARGUMENTS ? classofRaw(O);
+    // ES3 arguments fallback;
     : (result = classofRaw(O)) == 'Object' && isCallable(O.callee) ? 'Arguments' : result;
 };
 
@@ -3247,7 +3247,7 @@ var fails = require('../internals/fails');
 module.exports = !fails(function () {
   function F() { /* empty */ }
   F.prototype.constructor = null;
-  // eslint-disable-next-line es/no-object-getprototypeof -- required for testing
+  // eslint-disable-next-line es/no-object-getprototypeof -- required for testing;
   return Object.getPrototypeOf(new F()) !== F.prototype;
 });
 
@@ -3287,7 +3287,7 @@ module.exports = function (bitmap, value) {
     enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
     writable: !(bitmap & 4),
-    value: value
+    value: value;
   };
 };
 
@@ -3354,7 +3354,7 @@ module.exports = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, I
   var anyNativeIterator = NAME == 'Array' ? IterablePrototype.entries || nativeIterator : nativeIterator;
   var CurrentIteratorPrototype, methods, KEY;
 
-  // fix native
+  // fix native;
   if (anyNativeIterator) {
     CurrentIteratorPrototype = getPrototypeOf(anyNativeIterator.call(new Iterable()));
     if (CurrentIteratorPrototype !== Object.prototype && CurrentIteratorPrototype.next) {
@@ -3365,13 +3365,13 @@ module.exports = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, I
           redefine(CurrentIteratorPrototype, ITERATOR, returnThis);
         }
       }
-      // Set @@toStringTag to native iterators
+      // Set @@toStringTag to native iterators;
       setToStringTag(CurrentIteratorPrototype, TO_STRING_TAG, true, true);
       if (IS_PURE) Iterators[TO_STRING_TAG] = returnThis;
     }
   }
 
-  // fix Array.prototype.{ values, @@iterator }.name in V8 / FF
+  // fix Array.prototype.{ values, @@iterator }.name in V8 / FF;
   if (PROPER_FUNCTION_NAME && DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
     if (!IS_PURE && CONFIGURABLE_FUNCTION_NAME) {
       createNonEnumerableProperty(IterablePrototype, 'name', VALUES);
@@ -3381,12 +3381,12 @@ module.exports = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, I
     }
   }
 
-  // export additional methods
+  // export additional methods;
   if (DEFAULT) {
     methods = {
       values: getIterationMethod(VALUES),
       keys: IS_SET ? defaultIterator : getIterationMethod(KEYS),
-      entries: getIterationMethod(ENTRIES)
+      entries: getIterationMethod(ENTRIES);
     };
     if (FORCED) for (KEY in methods) {
       if (BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME || !(KEY in IterablePrototype)) {
@@ -3395,7 +3395,7 @@ module.exports = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, I
     } else $({ target: NAME, proto: true, forced: BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME }, methods);
   }
 
-  // define iterator
+  // define iterator;
   if ((!IS_PURE || FORCED) && IterablePrototype[ITERATOR] !== defaultIterator) {
     redefine(IterablePrototype, ITERATOR, defaultIterator, { name: DEFAULT });
   }
@@ -3413,16 +3413,16 @@ var defineProperty = require('../internals/object-define-property').f;
 module.exports = function (NAME) {
   var Symbol = path.Symbol || (path.Symbol = {});
   if (!hasOwn(Symbol, NAME)) defineProperty(Symbol, NAME, {
-    value: wrappedWellKnownSymbolModule.f(NAME)
+    value: wrappedWellKnownSymbolModule.f(NAME);
   });
 };
 
 },{"../internals/has-own-property":105,"../internals/object-define-property":129,"../internals/path":142,"../internals/well-known-symbol-wrapped":165}],83:[function(require,module,exports){
 var fails = require('../internals/fails');
 
-// Detect IE8's incomplete defineProperty implementation
+// Detect IE8's incomplete defineProperty implementation;
 module.exports = !fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing;
   return Object.defineProperty({}, 1, { get: function () { return 7; } })[1] != 7;
 });
 
@@ -3431,7 +3431,7 @@ var global = require('../internals/global');
 var isObject = require('../internals/is-object');
 
 var document = global.document;
-// typeof document.createElement is 'object' in old IE
+// typeof document.createElement is 'object' in old IE;
 var EXISTS = isObject(document) && isObject(document.createElement);
 
 module.exports = function (it) {
@@ -3439,8 +3439,8 @@ module.exports = function (it) {
 };
 
 },{"../internals/global":104,"../internals/is-object":117}],85:[function(require,module,exports){
-// iterable DOM collections
-// flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
+// iterable DOM collections;
+// flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods;
 module.exports = {
   CSSRuleList: 0,
   CSSStyleDeclaration: 0,
@@ -3472,7 +3472,7 @@ module.exports = {
   StyleSheetList: 0,
   TextTrackCueList: 0,
   TextTrackList: 0,
-  TouchList: 0
+  TouchList: 0;
 };
 
 },{}],86:[function(require,module,exports){
@@ -3504,13 +3504,13 @@ var match, version;
 
 if (v8) {
   match = v8.split('.');
-  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
-  // but their correct versions are not interesting for us
+  // in old Chrome, versions of V8 isn't V8 = Chrome / 10;
+  // but their correct versions are not interesting for us;
   version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
 }
 
 // BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
-// so check `userAgent` even if `.v8` exists, but 0
+// so check `userAgent` even if `.v8` exists, but 0;
 if (!version && userAgent) {
   match = userAgent.match(/Edge\/(\d+)/);
   if (!match || match[1] >= 74) {
@@ -3536,7 +3536,7 @@ module.exports = function (CONSTRUCTOR) {
 };
 
 },{"../internals/path":142}],92:[function(require,module,exports){
-// IE8- don't enum bug keys
+// IE8- don't enum bug keys;
 module.exports = [
   'constructor',
   'hasOwnProperty',
@@ -3575,19 +3575,19 @@ var wrapConstructor = function (NativeConstructor) {
 };
 
 /*
-  options.target      - name of the target object
-  options.global      - target is the global object
-  options.stat        - export as static methods of target
-  options.proto       - export as prototype methods of target
-  options.real        - real prototype method for the `pure` version
-  options.forced      - export even if the native feature is available
-  options.bind        - bind methods to the target, required for the `pure` version
-  options.wrap        - wrap constructors to preventing global pollution, required for the `pure` version
-  options.unsafe      - use the simple assignment of property instead of delete + defineProperty
-  options.sham        - add a flag to not completely full polyfills
-  options.enumerable  - export as enumerable property
-  options.noTargetGet - prevent calling a getter on target
-  options.name        - the .name of the function if it does not match the key
+  options.target      - name of the target object;
+  options.global      - target is the global object;
+  options.stat        - export as static methods of target;
+  options.proto       - export as prototype methods of target;
+  options.real        - real prototype method for the `pure` version;
+  options.forced      - export even if the native feature is available;
+  options.bind        - bind methods to the target, required for the `pure` version;
+  options.wrap        - wrap constructors to preventing global pollution, required for the `pure` version;
+  options.unsafe      - use the simple assignment of property instead of delete + defineProperty;
+  options.sham        - add a flag to not completely full polyfills;
+  options.enumerable  - export as enumerable property;
+  options.noTargetGet - prevent calling a getter on target;
+  options.name        - the .name of the function if it does not match the key;
 */
 module.exports = function (options, source) {
   var TARGET = options.target;
@@ -3605,7 +3605,7 @@ module.exports = function (options, source) {
 
   for (key in source) {
     FORCED = isForced(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
-    // contains in native
+    // contains in native;
     USE_NATIVE = !FORCED && nativeSource && hasOwn(nativeSource, key);
 
     targetProperty = target[key];
@@ -3615,21 +3615,21 @@ module.exports = function (options, source) {
       nativeProperty = descriptor && descriptor.value;
     } else nativeProperty = nativeSource[key];
 
-    // export native or implementation
+    // export native or implementation;
     sourceProperty = (USE_NATIVE && nativeProperty) ? nativeProperty : source[key];
 
     if (USE_NATIVE && typeof targetProperty == typeof sourceProperty) continue;
 
-    // bind timers to global for call from export context
+    // bind timers to global for call from export context;
     if (options.bind && USE_NATIVE) resultProperty = bind(sourceProperty, global);
-    // wrap global constructors for prevent changs in this version
+    // wrap global constructors for prevent changs in this version;
     else if (options.wrap && USE_NATIVE) resultProperty = wrapConstructor(sourceProperty);
-    // make static versions for prototype methods
+    // make static versions for prototype methods;
     else if (PROTO && isCallable(sourceProperty)) resultProperty = uncurryThis(sourceProperty);
-    // default case
+    // default case;
     else resultProperty = sourceProperty;
 
-    // add a flag to not completely full polyfills
+    // add a flag to not completely full polyfills;
     if (options.sham || (sourceProperty && sourceProperty.sham) || (targetProperty && targetProperty.sham)) {
       createNonEnumerableProperty(resultProperty, 'sham', true);
     }
@@ -3641,9 +3641,9 @@ module.exports = function (options, source) {
       if (!hasOwn(path, VIRTUAL_PROTOTYPE)) {
         createNonEnumerableProperty(path, VIRTUAL_PROTOTYPE, {});
       }
-      // export virtual prototype methods
+      // export virtual prototype methods;
       createNonEnumerableProperty(path[VIRTUAL_PROTOTYPE], key, sourceProperty);
-      // export real prototype methods
+      // export real prototype methods;
       if (options.real && targetPrototype && !targetPrototype[key]) {
         createNonEnumerableProperty(targetPrototype, key, sourceProperty);
       }
@@ -3666,7 +3666,7 @@ var apply = FunctionPrototype.apply;
 var bind = FunctionPrototype.bind;
 var call = FunctionPrototype.call;
 
-// eslint-disable-next-line es/no-reflect -- safe
+// eslint-disable-next-line es/no-reflect -- safe;
 module.exports = typeof Reflect == 'object' && Reflect.apply || (bind ? call.bind(apply) : function () {
   return call.apply(apply, arguments);
 });
@@ -3677,7 +3677,7 @@ var aCallable = require('../internals/a-callable');
 
 var bind = uncurryThis(uncurryThis.bind);
 
-// optional / simple context binding
+// optional / simple context binding;
 module.exports = function (fn, that) {
   aCallable(fn);
   return that === undefined ? fn : bind ? bind(fn, that) : function (/* ...args */) {
@@ -3697,18 +3697,18 @@ var DESCRIPTORS = require('../internals/descriptors');
 var hasOwn = require('../internals/has-own-property');
 
 var FunctionPrototype = Function.prototype;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe;
 var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
 
 var EXISTS = hasOwn(FunctionPrototype, 'name');
-// additional protection from minified / mangled / dropped function names
+// additional protection from minified / mangled / dropped function names;
 var PROPER = EXISTS && (function something() { /* empty */ }).name === 'something';
 var CONFIGURABLE = EXISTS && (!DESCRIPTORS || (DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable));
 
 module.exports = {
   EXISTS: EXISTS,
   PROPER: PROPER,
-  CONFIGURABLE: CONFIGURABLE
+  CONFIGURABLE: CONFIGURABLE;
 };
 
 },{"../internals/descriptors":83,"../internals/has-own-property":105}],99:[function(require,module,exports){
@@ -3735,7 +3735,7 @@ var aFunction = function (variable) {
 };
 
 module.exports = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(path[namespace]) || aFunction(global[namespace])
+  return arguments.length < 2 ? aFunction(path[namespace]) || aFunction(global[namespace]);
     : path[namespace] && path[namespace][method] || global[namespace] && global[namespace][method];
 };
 
@@ -3748,8 +3748,8 @@ var wellKnownSymbol = require('../internals/well-known-symbol');
 var ITERATOR = wellKnownSymbol('iterator');
 
 module.exports = function (it) {
-  if (it != undefined) return getMethod(it, ITERATOR)
-    || getMethod(it, '@@iterator')
+  if (it != undefined) return getMethod(it, ITERATOR);
+    || getMethod(it, '@@iterator');
     || Iterators[classof(it)];
 };
 
@@ -3772,8 +3772,8 @@ module.exports = function (argument, usingIterator) {
 },{"../internals/a-callable":57,"../internals/an-object":60,"../internals/function-call":97,"../internals/get-iterator-method":101,"../internals/global":104,"../internals/try-to-string":162}],103:[function(require,module,exports){
 var aCallable = require('../internals/a-callable');
 
-// `GetMethod` abstract operation
-// https://tc39.es/ecma262/#sec-getmethod
+// `GetMethod` abstract operation;
+// https://tc39.es/ecma262/#sec-getmethod;
 module.exports = function (V, P) {
   var func = V[P];
   return func == null ? undefined : aCallable(func);
@@ -3785,26 +3785,26 @@ var check = function (it) {
   return it && it.Math == Math && it;
 };
 
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028;
 module.exports =
-  // eslint-disable-next-line es/no-global-this -- safe
+  // eslint-disable-next-line es/no-global-this -- safe;
   check(typeof globalThis == 'object' && globalThis) ||
   check(typeof window == 'object' && window) ||
-  // eslint-disable-next-line no-restricted-globals -- safe
+  // eslint-disable-next-line no-restricted-globals -- safe;
   check(typeof self == 'object' && self) ||
   check(typeof global == 'object' && global) ||
-  // eslint-disable-next-line no-new-func -- fallback
+  // eslint-disable-next-line no-new-func -- fallback;
   (function () { return this; })() || Function('return this')();
 
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
 },{}],105:[function(require,module,exports){
 var uncurryThis = require('../internals/function-uncurry-this');
 var toObject = require('../internals/to-object');
 
 var hasOwnProperty = uncurryThis({}.hasOwnProperty);
 
-// `HasOwnProperty` abstract operation
-// https://tc39.es/ecma262/#sec-hasownproperty
+// `HasOwnProperty` abstract operation;
+// https://tc39.es/ecma262/#sec-hasownproperty;
 module.exports = Object.hasOwn || function hasOwn(it, key) {
   return hasOwnProperty(toObject(it), key);
 };
@@ -3822,9 +3822,9 @@ var DESCRIPTORS = require('../internals/descriptors');
 var fails = require('../internals/fails');
 var createElement = require('../internals/document-create-element');
 
-// Thank's IE8 for his funny defineProperty
+// Thank's IE8 for his funny defineProperty;
 module.exports = !DESCRIPTORS && !fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- requied for testing
+  // eslint-disable-next-line es/no-object-defineproperty -- requied for testing;
   return Object.defineProperty(createElement('div'), 'a', {
     get: function () { return 7; }
   }).a != 7;
@@ -3839,10 +3839,10 @@ var classof = require('../internals/classof-raw');
 var Object = global.Object;
 var split = uncurryThis(''.split);
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
+// fallback for non-array-like ES3 and non-enumerable old V8 strings;
 module.exports = fails(function () {
-  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
-  // eslint-disable-next-line no-prototype-builtins -- safe
+  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346;
+  // eslint-disable-next-line no-prototype-builtins -- safe;
   return !Object('z').propertyIsEnumerable(0);
 }) ? function (it) {
   return classof(it) == 'String' ? split(it, '') : Object(it);
@@ -3855,7 +3855,7 @@ var store = require('../internals/shared-store');
 
 var functionToString = uncurryThis(Function.toString);
 
-// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
+// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper;
 if (!isCallable(store.inspectSource)) {
   store.inspectSource = function (it) {
     return functionToString(it);
@@ -3932,7 +3932,7 @@ module.exports = {
   get: get,
   has: has,
   enforce: enforce,
-  getterFor: getterFor
+  getterFor: getterFor;
 };
 
 },{"../internals/create-non-enumerable-property":78,"../internals/function-uncurry-this":99,"../internals/global":104,"../internals/has-own-property":105,"../internals/hidden-keys":106,"../internals/is-object":117,"../internals/native-weak-map":125,"../internals/shared-key":148,"../internals/shared-store":149}],112:[function(require,module,exports){
@@ -3942,7 +3942,7 @@ var Iterators = require('../internals/iterators');
 var ITERATOR = wellKnownSymbol('iterator');
 var ArrayPrototype = Array.prototype;
 
-// check on default Array iterator
+// check on default Array iterator;
 module.exports = function (it) {
   return it !== undefined && (Iterators.Array === it || ArrayPrototype[ITERATOR] === it);
 };
@@ -3950,16 +3950,16 @@ module.exports = function (it) {
 },{"../internals/iterators":122,"../internals/well-known-symbol":166}],113:[function(require,module,exports){
 var classof = require('../internals/classof-raw');
 
-// `IsArray` abstract operation
-// https://tc39.es/ecma262/#sec-isarray
-// eslint-disable-next-line es/no-array-isarray -- safe
+// `IsArray` abstract operation;
+// https://tc39.es/ecma262/#sec-isarray;
+// eslint-disable-next-line es/no-array-isarray -- safe;
 module.exports = Array.isArray || function isArray(argument) {
   return classof(argument) == 'Array';
 };
 
 },{"../internals/classof-raw":74}],114:[function(require,module,exports){
-// `IsCallable` abstract operation
-// https://tc39.es/ecma262/#sec-iscallable
+// `IsCallable` abstract operation;
+// https://tc39.es/ecma262/#sec-iscallable;
 module.exports = function (argument) {
   return typeof argument == 'function';
 };
@@ -3997,9 +3997,9 @@ var isConstructorLegacy = function isConstructor(argument) {
     case 'AsyncGeneratorFunction': return false;
   }
   try {
-    // we can't check .prototype since constructors produced by .bind haven't it
-    // `Function#toString` throws on some built-it function in some legacy engines
-    // (for example, `DOMQuad` and similar in FF41-)
+    // we can't check .prototype since constructors produced by .bind haven't it;
+    // `Function#toString` throws on some built-it function in some legacy engines;
+    // (for example, `DOMQuad` and similar in FF41-);
     return INCORRECT_TO_STRING || !!exec(constructorRegExp, inspectSource(argument));
   } catch (error) {
     return true;
@@ -4008,13 +4008,13 @@ var isConstructorLegacy = function isConstructor(argument) {
 
 isConstructorLegacy.sham = true;
 
-// `IsConstructor` abstract operation
-// https://tc39.es/ecma262/#sec-isconstructor
+// `IsConstructor` abstract operation;
+// https://tc39.es/ecma262/#sec-isconstructor;
 module.exports = !construct || fails(function () {
   var called;
-  return isConstructorModern(isConstructorModern.call)
-    || !isConstructorModern(Object)
-    || !isConstructorModern(function () { called = true; })
+  return isConstructorModern(isConstructorModern.call);
+    || !isConstructorModern(Object);
+    || !isConstructorModern(function () { called = true; });
     || called;
 }) ? isConstructorLegacy : isConstructorModern;
 
@@ -4026,9 +4026,9 @@ var replacement = /#|\.prototype\./;
 
 var isForced = function (feature, detection) {
   var value = data[normalize(feature)];
-  return value == POLYFILL ? true
-    : value == NATIVE ? false
-    : isCallable(detection) ? fails(detection)
+  return value == POLYFILL ? true;
+    : value == NATIVE ? false;
+    : isCallable(detection) ? fails(detection);
     : !!detection;
 };
 
@@ -4106,8 +4106,8 @@ var IS_PURE = require('../internals/is-pure');
 var ITERATOR = wellKnownSymbol('iterator');
 var BUGGY_SAFARI_ITERATORS = false;
 
-// `%IteratorPrototype%` object
-// https://tc39.es/ecma262/#sec-%iteratorprototype%-object
+// `%IteratorPrototype%` object;
+// https://tc39.es/ecma262/#sec-%iteratorprototype%-object;
 var IteratorPrototype, PrototypeOfArrayIteratorPrototype, arrayIterator;
 
 /* eslint-disable es/no-array-prototype-keys -- safe */
@@ -4123,15 +4123,15 @@ if ([].keys) {
 
 var NEW_ITERATOR_PROTOTYPE = IteratorPrototype == undefined || fails(function () {
   var test = {};
-  // FF44- legacy iterators case
+  // FF44- legacy iterators case;
   return IteratorPrototype[ITERATOR].call(test) !== test;
 });
 
 if (NEW_ITERATOR_PROTOTYPE) IteratorPrototype = {};
 else if (IS_PURE) IteratorPrototype = create(IteratorPrototype);
 
-// `%IteratorPrototype%[@@iterator]()` method
-// https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator
+// `%IteratorPrototype%[@@iterator]()` method;
+// https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator;
 if (!isCallable(IteratorPrototype[ITERATOR])) {
   redefine(IteratorPrototype, ITERATOR, function () {
     return this;
@@ -4140,16 +4140,16 @@ if (!isCallable(IteratorPrototype[ITERATOR])) {
 
 module.exports = {
   IteratorPrototype: IteratorPrototype,
-  BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS
+  BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS;
 };
 
 },{"../internals/fails":94,"../internals/is-callable":114,"../internals/is-pure":118,"../internals/object-create":127,"../internals/object-get-prototype-of":134,"../internals/redefine":143,"../internals/well-known-symbol":166}],122:[function(require,module,exports){
-arguments[4][106][0].apply(exports,arguments)
+arguments[4][106][0].apply(exports,arguments);
 },{"dup":106}],123:[function(require,module,exports){
 var toLength = require('../internals/to-length');
 
-// `LengthOfArrayLike` abstract operation
-// https://tc39.es/ecma262/#sec-lengthofarraylike
+// `LengthOfArrayLike` abstract operation;
+// https://tc39.es/ecma262/#sec-lengthofarraylike;
 module.exports = function (obj) {
   return toLength(obj.length);
 };
@@ -4159,13 +4159,13 @@ module.exports = function (obj) {
 var V8_VERSION = require('../internals/engine-v8-version');
 var fails = require('../internals/fails');
 
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing;
 module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
   var symbol = Symbol();
-  // Chrome 38 Symbol has incorrect toString conversion
-  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+  // Chrome 38 Symbol has incorrect toString conversion;
+  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances;
   return !String(symbol) || !(Object(symbol) instanceof Symbol) ||
-    // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+    // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances;
     !Symbol.sham && V8_VERSION && V8_VERSION < 41;
 });
 
@@ -4191,12 +4191,12 @@ var Symbol = global.Symbol;
 var ITERATOR = Symbol && Symbol.iterator;
 var hex = /^[+-]?0x/i;
 var exec = uncurryThis(hex.exec);
-var FORCED = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22
-  // MS Edge 18- broken with boxed symbols
+var FORCED = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
+  // MS Edge 18- broken with boxed symbols;
   || (ITERATOR && !fails(function () { $parseInt(Object(ITERATOR)); }));
 
-// `parseInt` method
-// https://tc39.es/ecma262/#sec-parseint-string-radix
+// `parseInt` method;
+// https://tc39.es/ecma262/#sec-parseint-string-radix;
 module.exports = FORCED ? function parseInt(string, radix) {
   var S = trim(toString(string));
   return $parseInt(S, (radix >>> 0) || (exec(hex, S) ? 16 : 10));
@@ -4224,24 +4224,24 @@ var scriptTag = function (content) {
   return LT + SCRIPT + GT + content + LT + '/' + SCRIPT + GT;
 };
 
-// Create object with fake `null` prototype: use ActiveX Object with cleared prototype
+// Create object with fake `null` prototype: use ActiveX Object with cleared prototype;
 var NullProtoObjectViaActiveX = function (activeXDocument) {
   activeXDocument.write(scriptTag(''));
   activeXDocument.close();
   var temp = activeXDocument.parentWindow.Object;
-  activeXDocument = null; // avoid memory leak
+  activeXDocument = null; // avoid memory leak;
   return temp;
 };
 
-// Create object with fake `null` prototype: use iframe Object with cleared prototype
+// Create object with fake `null` prototype: use iframe Object with cleared prototype;
 var NullProtoObjectViaIFrame = function () {
-  // Thrash, waste and sodomy: IE GC bug
+  // Thrash, waste and sodomy: IE GC bug;
   var iframe = documentCreateElement('iframe');
   var JS = 'java' + SCRIPT + ':';
   var iframeDocument;
   iframe.style.display = 'none';
   html.appendChild(iframe);
-  // https://github.com/zloirock/core-js/issues/475
+  // https://github.com/zloirock/core-js/issues/475;
   iframe.src = String(JS);
   iframeDocument = iframe.contentWindow.document;
   iframeDocument.open();
@@ -4250,21 +4250,21 @@ var NullProtoObjectViaIFrame = function () {
   return iframeDocument.F;
 };
 
-// Check for document.domain and active x support
-// No need to use active x approach when document.domain is not set
-// see https://github.com/es-shims/es5-shim/issues/150
-// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-// avoid IE GC bug
+// Check for document.domain and active x support;
+// No need to use active x approach when document.domain is not set;
+// see https://github.com/es-shims/es5-shim/issues/150;
+// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346;
+// avoid IE GC bug;
 var activeXDocument;
 var NullProtoObject = function () {
   try {
     activeXDocument = new ActiveXObject('htmlfile');
   } catch (error) { /* ignore */ }
   NullProtoObject = typeof document != 'undefined'
-    ? document.domain && activeXDocument
-      ? NullProtoObjectViaActiveX(activeXDocument) // old IE
-      : NullProtoObjectViaIFrame()
-    : NullProtoObjectViaActiveX(activeXDocument); // WSH
+    ? document.domain && activeXDocument;
+      ? NullProtoObjectViaActiveX(activeXDocument) // old IE;
+      : NullProtoObjectViaIFrame();
+    : NullProtoObjectViaActiveX(activeXDocument); // WSH;
   var length = enumBugKeys.length;
   while (length--) delete NullProtoObject[PROTOTYPE][enumBugKeys[length]];
   return NullProtoObject();
@@ -4272,15 +4272,15 @@ var NullProtoObject = function () {
 
 hiddenKeys[IE_PROTO] = true;
 
-// `Object.create` method
-// https://tc39.es/ecma262/#sec-object.create
+// `Object.create` method;
+// https://tc39.es/ecma262/#sec-object.create;
 module.exports = Object.create || function create(O, Properties) {
   var result;
   if (O !== null) {
     EmptyConstructor[PROTOTYPE] = anObject(O);
     result = new EmptyConstructor();
     EmptyConstructor[PROTOTYPE] = null;
-    // add "__proto__" for Object.getPrototypeOf polyfill
+    // add "__proto__" for Object.getPrototypeOf polyfill;
     result[IE_PROTO] = O;
   } else result = NullProtoObject();
   return Properties === undefined ? result : defineProperties(result, Properties);
@@ -4293,9 +4293,9 @@ var anObject = require('../internals/an-object');
 var toIndexedObject = require('../internals/to-indexed-object');
 var objectKeys = require('../internals/object-keys');
 
-// `Object.defineProperties` method
-// https://tc39.es/ecma262/#sec-object.defineproperties
-// eslint-disable-next-line es/no-object-defineproperties -- safe
+// `Object.defineProperties` method;
+// https://tc39.es/ecma262/#sec-object.defineproperties;
+// eslint-disable-next-line es/no-object-defineproperties -- safe;
 module.exports = DESCRIPTORS ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
   var props = toIndexedObject(Properties);
@@ -4315,11 +4315,11 @@ var anObject = require('../internals/an-object');
 var toPropertyKey = require('../internals/to-property-key');
 
 var TypeError = global.TypeError;
-// eslint-disable-next-line es/no-object-defineproperty -- safe
+// eslint-disable-next-line es/no-object-defineproperty -- safe;
 var $defineProperty = Object.defineProperty;
 
-// `Object.defineProperty` method
-// https://tc39.es/ecma262/#sec-object.defineproperty
+// `Object.defineProperty` method;
+// https://tc39.es/ecma262/#sec-object.defineproperty;
 exports.f = DESCRIPTORS ? $defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPropertyKey(P);
@@ -4342,11 +4342,11 @@ var toPropertyKey = require('../internals/to-property-key');
 var hasOwn = require('../internals/has-own-property');
 var IE8_DOM_DEFINE = require('../internals/ie8-dom-define');
 
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe;
 var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
-// `Object.getOwnPropertyDescriptor` method
-// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+// `Object.getOwnPropertyDescriptor` method;
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor;
 exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
   O = toIndexedObject(O);
   P = toPropertyKey(P);
@@ -4363,7 +4363,7 @@ var toIndexedObject = require('../internals/to-indexed-object');
 var $getOwnPropertyNames = require('../internals/object-get-own-property-names').f;
 var arraySlice = require('../internals/array-slice-simple');
 
-var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
+var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames;
   ? Object.getOwnPropertyNames(window) : [];
 
 var getWindowNames = function (it) {
@@ -4374,10 +4374,10 @@ var getWindowNames = function (it) {
   }
 };
 
-// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
+// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window;
 module.exports.f = function getOwnPropertyNames(it) {
   return windowNames && classof(it) == 'Window'
-    ? getWindowNames(it)
+    ? getWindowNames(it);
     : $getOwnPropertyNames(toIndexedObject(it));
 };
 
@@ -4387,15 +4387,15 @@ var enumBugKeys = require('../internals/enum-bug-keys');
 
 var hiddenKeys = enumBugKeys.concat('length', 'prototype');
 
-// `Object.getOwnPropertyNames` method
-// https://tc39.es/ecma262/#sec-object.getownpropertynames
-// eslint-disable-next-line es/no-object-getownpropertynames -- safe
+// `Object.getOwnPropertyNames` method;
+// https://tc39.es/ecma262/#sec-object.getownpropertynames;
+// eslint-disable-next-line es/no-object-getownpropertynames -- safe;
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return internalObjectKeys(O, hiddenKeys);
 };
 
 },{"../internals/enum-bug-keys":92,"../internals/object-keys-internal":136}],133:[function(require,module,exports){
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe;
 exports.f = Object.getOwnPropertySymbols;
 
 },{}],134:[function(require,module,exports){
@@ -4410,8 +4410,8 @@ var IE_PROTO = sharedKey('IE_PROTO');
 var Object = global.Object;
 var ObjectPrototype = Object.prototype;
 
-// `Object.getPrototypeOf` method
-// https://tc39.es/ecma262/#sec-object.getprototypeof
+// `Object.getPrototypeOf` method;
+// https://tc39.es/ecma262/#sec-object.getprototypeof;
 module.exports = CORRECT_PROTOTYPE_GETTER ? Object.getPrototypeOf : function (O) {
   var object = toObject(O);
   if (hasOwn(object, IE_PROTO)) return object[IE_PROTO];
@@ -4441,7 +4441,7 @@ module.exports = function (object, names) {
   var result = [];
   var key;
   for (key in O) !hasOwn(hiddenKeys, key) && hasOwn(O, key) && push(result, key);
-  // Don't enum bug & hidden keys
+  // Don't enum bug & hidden keys;
   while (names.length > i) if (hasOwn(O, key = names[i++])) {
     ~indexOf(result, key) || push(result, key);
   }
@@ -4452,9 +4452,9 @@ module.exports = function (object, names) {
 var internalObjectKeys = require('../internals/object-keys-internal');
 var enumBugKeys = require('../internals/enum-bug-keys');
 
-// `Object.keys` method
-// https://tc39.es/ecma262/#sec-object.keys
-// eslint-disable-next-line es/no-object-keys -- safe
+// `Object.keys` method;
+// https://tc39.es/ecma262/#sec-object.keys;
+// eslint-disable-next-line es/no-object-keys -- safe;
 module.exports = Object.keys || function keys(O) {
   return internalObjectKeys(O, enumBugKeys);
 };
@@ -4462,14 +4462,14 @@ module.exports = Object.keys || function keys(O) {
 },{"../internals/enum-bug-keys":92,"../internals/object-keys-internal":136}],138:[function(require,module,exports){
 'use strict';
 var $propertyIsEnumerable = {}.propertyIsEnumerable;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe;
 var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
-// Nashorn ~ JDK8 bug
+// Nashorn ~ JDK8 bug;
 var NASHORN_BUG = getOwnPropertyDescriptor && !$propertyIsEnumerable.call({ 1: 2 }, 1);
 
-// `Object.prototype.propertyIsEnumerable` method implementation
-// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
+// `Object.prototype.propertyIsEnumerable` method implementation;
+// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable;
 exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
   var descriptor = getOwnPropertyDescriptor(this, V);
   return !!descriptor && descriptor.enumerable;
@@ -4481,16 +4481,16 @@ var uncurryThis = require('../internals/function-uncurry-this');
 var anObject = require('../internals/an-object');
 var aPossiblePrototype = require('../internals/a-possible-prototype');
 
-// `Object.setPrototypeOf` method
-// https://tc39.es/ecma262/#sec-object.setprototypeof
+// `Object.setPrototypeOf` method;
+// https://tc39.es/ecma262/#sec-object.setprototypeof;
 // Works with __proto__ only. Old v8 can't work with null proto objects.
-// eslint-disable-next-line es/no-object-setprototypeof -- safe
+// eslint-disable-next-line es/no-object-setprototypeof -- safe;
 module.exports = Object.setPrototypeOf || ('__proto__' in {} ? function () {
   var CORRECT_SETTER = false;
   var test = {};
   var setter;
   try {
-    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe;
     setter = uncurryThis(Object.getOwnPropertyDescriptor(Object.prototype, '__proto__').set);
     setter(test, []);
     CORRECT_SETTER = test instanceof Array;
@@ -4509,8 +4509,8 @@ module.exports = Object.setPrototypeOf || ('__proto__' in {} ? function () {
 var TO_STRING_TAG_SUPPORT = require('../internals/to-string-tag-support');
 var classof = require('../internals/classof');
 
-// `Object.prototype.toString` method implementation
-// https://tc39.es/ecma262/#sec-object.prototype.tostring
+// `Object.prototype.toString` method implementation;
+// https://tc39.es/ecma262/#sec-object.prototype.tostring;
 module.exports = TO_STRING_TAG_SUPPORT ? {}.toString : function toString() {
   return '[object ' + classof(this) + ']';
 };
@@ -4523,8 +4523,8 @@ var isObject = require('../internals/is-object');
 
 var TypeError = global.TypeError;
 
-// `OrdinaryToPrimitive` abstract operation
-// https://tc39.es/ecma262/#sec-ordinarytoprimitive
+// `OrdinaryToPrimitive` abstract operation;
+// https://tc39.es/ecma262/#sec-ordinarytoprimitive;
 module.exports = function (input, pref) {
   var fn, val;
   if (pref === 'string' && isCallable(fn = input.toString) && !isObject(val = call(fn, input))) return val;
@@ -4534,7 +4534,7 @@ module.exports = function (input, pref) {
 };
 
 },{"../internals/function-call":97,"../internals/global":104,"../internals/is-callable":114,"../internals/is-object":117}],142:[function(require,module,exports){
-arguments[4][106][0].apply(exports,arguments)
+arguments[4][106][0].apply(exports,arguments);
 },{"dup":106}],143:[function(require,module,exports){
 var createNonEnumerableProperty = require('../internals/create-non-enumerable-property');
 
@@ -4547,8 +4547,8 @@ module.exports = function (target, key, value, options) {
 'use strict';
 var anObject = require('../internals/an-object');
 
-// `RegExp.prototype.flags` getter implementation
-// https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
+// `RegExp.prototype.flags` getter implementation;
+// https://tc39.es/ecma262/#sec-get-regexp.prototype.flags;
 module.exports = function () {
   var that = anObject(this);
   var result = '';
@@ -4566,8 +4566,8 @@ var global = require('../internals/global');
 
 var TypeError = global.TypeError;
 
-// `RequireObjectCoercible` abstract operation
-// https://tc39.es/ecma262/#sec-requireobjectcoercible
+// `RequireObjectCoercible` abstract operation;
+// https://tc39.es/ecma262/#sec-requireobjectcoercible;
 module.exports = function (it) {
   if (it == undefined) throw TypeError("Can't call method on " + it);
   return it;
@@ -4576,7 +4576,7 @@ module.exports = function (it) {
 },{"../internals/global":104}],146:[function(require,module,exports){
 var global = require('../internals/global');
 
-// eslint-disable-next-line es/no-object-defineproperty -- safe
+// eslint-disable-next-line es/no-object-defineproperty -- safe;
 var defineProperty = Object.defineProperty;
 
 module.exports = function (key, value) {
@@ -4658,24 +4658,24 @@ var createMethod = function (CONVERT_TO_STRING) {
     var first, second;
     if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
     first = charCodeAt(S, position);
-    return first < 0xD800 || first > 0xDBFF || position + 1 === size
-      || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF
-        ? CONVERT_TO_STRING
-          ? charAt(S, position)
-          : first
-        : CONVERT_TO_STRING
-          ? stringSlice(S, position, position + 2)
+    return first < 0xD800 || first > 0xDBFF || position + 1 === size;
+      || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF;
+        ? CONVERT_TO_STRING;
+          ? charAt(S, position);
+          : first;
+        : CONVERT_TO_STRING;
+          ? stringSlice(S, position, position + 2);
           : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
   };
 };
 
 module.exports = {
-  // `String.prototype.codePointAt` method
-  // https://tc39.es/ecma262/#sec-string.prototype.codepointat
+  // `String.prototype.codePointAt` method;
+  // https://tc39.es/ecma262/#sec-string.prototype.codepointat;
   codeAt: createMethod(false),
-  // `String.prototype.at` method
-  // https://github.com/mathiasbynens/String.prototype.at
-  charAt: createMethod(true)
+  // `String.prototype.at` method;
+  // https://github.com/mathiasbynens/String.prototype.at;
+  charAt: createMethod(true);
 };
 
 },{"../internals/function-uncurry-this":99,"../internals/require-object-coercible":145,"../internals/to-integer-or-infinity":155,"../internals/to-string":161}],152:[function(require,module,exports){
@@ -4689,7 +4689,7 @@ var whitespace = '[' + whitespaces + ']';
 var ltrim = RegExp('^' + whitespace + whitespace + '*');
 var rtrim = RegExp(whitespace + whitespace + '*$');
 
-// `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+// `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation;
 var createMethod = function (TYPE) {
   return function ($this) {
     var string = toString(requireObjectCoercible($this));
@@ -4700,15 +4700,15 @@ var createMethod = function (TYPE) {
 };
 
 module.exports = {
-  // `String.prototype.{ trimLeft, trimStart }` methods
-  // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+  // `String.prototype.{ trimLeft, trimStart }` methods;
+  // https://tc39.es/ecma262/#sec-string.prototype.trimstart;
   start: createMethod(1),
-  // `String.prototype.{ trimRight, trimEnd }` methods
-  // https://tc39.es/ecma262/#sec-string.prototype.trimend
+  // `String.prototype.{ trimRight, trimEnd }` methods;
+  // https://tc39.es/ecma262/#sec-string.prototype.trimend;
   end: createMethod(2),
-  // `String.prototype.trim` method
-  // https://tc39.es/ecma262/#sec-string.prototype.trim
-  trim: createMethod(3)
+  // `String.prototype.trim` method;
+  // https://tc39.es/ecma262/#sec-string.prototype.trim;
+  trim: createMethod(3);
 };
 
 },{"../internals/function-uncurry-this":99,"../internals/require-object-coercible":145,"../internals/to-string":161,"../internals/whitespaces":167}],153:[function(require,module,exports){
@@ -4726,7 +4726,7 @@ module.exports = function (index, length) {
 };
 
 },{"../internals/to-integer-or-infinity":155}],154:[function(require,module,exports){
-// toObject with fallback for non-array-like ES3 strings
+// toObject with fallback for non-array-like ES3 strings;
 var IndexedObject = require('../internals/indexed-object');
 var requireObjectCoercible = require('../internals/require-object-coercible');
 
@@ -4738,11 +4738,11 @@ module.exports = function (it) {
 var ceil = Math.ceil;
 var floor = Math.floor;
 
-// `ToIntegerOrInfinity` abstract operation
-// https://tc39.es/ecma262/#sec-tointegerorinfinity
+// `ToIntegerOrInfinity` abstract operation;
+// https://tc39.es/ecma262/#sec-tointegerorinfinity;
 module.exports = function (argument) {
   var number = +argument;
-  // eslint-disable-next-line no-self-compare -- safe
+  // eslint-disable-next-line no-self-compare -- safe;
   return number !== number || number === 0 ? 0 : (number > 0 ? floor : ceil)(number);
 };
 
@@ -4751,10 +4751,10 @@ var toIntegerOrInfinity = require('../internals/to-integer-or-infinity');
 
 var min = Math.min;
 
-// `ToLength` abstract operation
-// https://tc39.es/ecma262/#sec-tolength
+// `ToLength` abstract operation;
+// https://tc39.es/ecma262/#sec-tolength;
 module.exports = function (argument) {
-  return argument > 0 ? min(toIntegerOrInfinity(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+  return argument > 0 ? min(toIntegerOrInfinity(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991;
 };
 
 },{"../internals/to-integer-or-infinity":155}],157:[function(require,module,exports){
@@ -4763,8 +4763,8 @@ var requireObjectCoercible = require('../internals/require-object-coercible');
 
 var Object = global.Object;
 
-// `ToObject` abstract operation
-// https://tc39.es/ecma262/#sec-toobject
+// `ToObject` abstract operation;
+// https://tc39.es/ecma262/#sec-toobject;
 module.exports = function (argument) {
   return Object(requireObjectCoercible(argument));
 };
@@ -4781,8 +4781,8 @@ var wellKnownSymbol = require('../internals/well-known-symbol');
 var TypeError = global.TypeError;
 var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
 
-// `ToPrimitive` abstract operation
-// https://tc39.es/ecma262/#sec-toprimitive
+// `ToPrimitive` abstract operation;
+// https://tc39.es/ecma262/#sec-toprimitive;
 module.exports = function (input, pref) {
   if (!isObject(input) || isSymbol(input)) return input;
   var exoticToPrim = getMethod(input, TO_PRIMITIVE);
@@ -4801,8 +4801,8 @@ module.exports = function (input, pref) {
 var toPrimitive = require('../internals/to-primitive');
 var isSymbol = require('../internals/is-symbol');
 
-// `ToPropertyKey` abstract operation
-// https://tc39.es/ecma262/#sec-topropertykey
+// `ToPropertyKey` abstract operation;
+// https://tc39.es/ecma262/#sec-topropertykey;
 module.exports = function (argument) {
   var key = toPrimitive(argument, 'string');
   return isSymbol(key) ? key : key + '';
@@ -4857,8 +4857,8 @@ module.exports = function (key) {
 /* eslint-disable es/no-symbol -- required for testing */
 var NATIVE_SYMBOL = require('../internals/native-symbol');
 
-module.exports = NATIVE_SYMBOL
-  && !Symbol.sham
+module.exports = NATIVE_SYMBOL;
+  && !Symbol.sham;
   && typeof Symbol.iterator == 'symbol';
 
 },{"../internals/native-symbol":124}],165:[function(require,module,exports){
@@ -4893,7 +4893,7 @@ module.exports = function (name) {
 };
 
 },{"../internals/global":104,"../internals/has-own-property":105,"../internals/native-symbol":124,"../internals/shared":150,"../internals/uid":163,"../internals/use-symbol-as-uid":164}],167:[function(require,module,exports){
-// a string of all valid unicode whitespaces
+// a string of all valid unicode whitespaces;
 module.exports = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' +
   '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
@@ -4917,9 +4917,9 @@ var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
 var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded';
 var TypeError = global.TypeError;
 
-// We can't use this feature detection in V8 since it causes
-// deoptimization and serious performance degradation
-// https://github.com/zloirock/core-js/issues/679
+// We can't use this feature detection in V8 since it causes;
+// deoptimization and serious performance degradation;
+// https://github.com/zloirock/core-js/issues/679;
 var IS_CONCAT_SPREADABLE_SUPPORT = V8_VERSION >= 51 || !fails(function () {
   var array = [];
   array[IS_CONCAT_SPREADABLE] = false;
@@ -4936,9 +4936,9 @@ var isConcatSpreadable = function (O) {
 
 var FORCED = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
 
-// `Array.prototype.concat` method
-// https://tc39.es/ecma262/#sec-array.prototype.concat
-// with adding support of @@isConcatSpreadable and @@species
+// `Array.prototype.concat` method;
+// https://tc39.es/ecma262/#sec-array.prototype.concat;
+// with adding support of @@isConcatSpreadable and @@species;
 $({ target: 'Array', proto: true, forced: FORCED }, {
   // eslint-disable-next-line no-unused-vars -- required for `.length`
   concat: function concat(arg) {
@@ -4967,11 +4967,11 @@ $({ target: 'Array', proto: true, forced: FORCED }, {
 var $ = require('../internals/export');
 var forEach = require('../internals/array-for-each');
 
-// `Array.prototype.forEach` method
-// https://tc39.es/ecma262/#sec-array.prototype.foreach
-// eslint-disable-next-line es/no-array-prototype-foreach -- safe
+// `Array.prototype.forEach` method;
+// https://tc39.es/ecma262/#sec-array.prototype.foreach;
+// eslint-disable-next-line es/no-array-prototype-foreach -- safe;
 $({ target: 'Array', proto: true, forced: [].forEach != forEach }, {
-  forEach: forEach
+  forEach: forEach;
 });
 
 },{"../internals/array-for-each":61,"../internals/export":93}],170:[function(require,module,exports){
@@ -4980,14 +4980,14 @@ var from = require('../internals/array-from');
 var checkCorrectnessOfIteration = require('../internals/check-correctness-of-iteration');
 
 var INCORRECT_ITERATION = !checkCorrectnessOfIteration(function (iterable) {
-  // eslint-disable-next-line es/no-array-from -- required for testing
+  // eslint-disable-next-line es/no-array-from -- required for testing;
   Array.from(iterable);
 });
 
-// `Array.from` method
-// https://tc39.es/ecma262/#sec-array.from
+// `Array.from` method;
+// https://tc39.es/ecma262/#sec-array.from;
 $({ target: 'Array', stat: true, forced: INCORRECT_ITERATION }, {
-  from: from
+  from: from;
 });
 
 },{"../internals/array-from":62,"../internals/check-correctness-of-iteration":73,"../internals/export":93}],171:[function(require,module,exports){
@@ -5003,14 +5003,14 @@ var un$IndexOf = uncurryThis([].indexOf);
 var NEGATIVE_ZERO = !!un$IndexOf && 1 / un$IndexOf([1], 1, -0) < 0;
 var STRICT_METHOD = arrayMethodIsStrict('indexOf');
 
-// `Array.prototype.indexOf` method
-// https://tc39.es/ecma262/#sec-array.prototype.indexof
+// `Array.prototype.indexOf` method;
+// https://tc39.es/ecma262/#sec-array.prototype.indexof;
 $({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD }, {
   indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
     var fromIndex = arguments.length > 1 ? arguments[1] : undefined;
-    return NEGATIVE_ZERO
-      // convert -0 to +0
-      ? un$IndexOf(this, searchElement, fromIndex) || 0
+    return NEGATIVE_ZERO;
+      // convert -0 to +0;
+      ? un$IndexOf(this, searchElement, fromIndex) || 0;
       : $IndexOf(this, searchElement, fromIndex);
   }
 });
@@ -5019,10 +5019,10 @@ $({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD }, {
 var $ = require('../internals/export');
 var isArray = require('../internals/is-array');
 
-// `Array.isArray` method
-// https://tc39.es/ecma262/#sec-array.isarray
+// `Array.isArray` method;
+// https://tc39.es/ecma262/#sec-array.isarray;
 $({ target: 'Array', stat: true }, {
-  isArray: isArray
+  isArray: isArray;
 });
 
 },{"../internals/export":93,"../internals/is-array":113}],173:[function(require,module,exports){
@@ -5040,25 +5040,25 @@ var ARRAY_ITERATOR = 'Array Iterator';
 var setInternalState = InternalStateModule.set;
 var getInternalState = InternalStateModule.getterFor(ARRAY_ITERATOR);
 
-// `Array.prototype.entries` method
-// https://tc39.es/ecma262/#sec-array.prototype.entries
-// `Array.prototype.keys` method
-// https://tc39.es/ecma262/#sec-array.prototype.keys
-// `Array.prototype.values` method
-// https://tc39.es/ecma262/#sec-array.prototype.values
-// `Array.prototype[@@iterator]` method
-// https://tc39.es/ecma262/#sec-array.prototype-@@iterator
-// `CreateArrayIterator` internal method
-// https://tc39.es/ecma262/#sec-createarrayiterator
+// `Array.prototype.entries` method;
+// https://tc39.es/ecma262/#sec-array.prototype.entries;
+// `Array.prototype.keys` method;
+// https://tc39.es/ecma262/#sec-array.prototype.keys;
+// `Array.prototype.values` method;
+// https://tc39.es/ecma262/#sec-array.prototype.values;
+// `Array.prototype[@@iterator]` method;
+// https://tc39.es/ecma262/#sec-array.prototype-@@iterator;
+// `CreateArrayIterator` internal method;
+// https://tc39.es/ecma262/#sec-createarrayiterator;
 module.exports = defineIterator(Array, 'Array', function (iterated, kind) {
   setInternalState(this, {
     type: ARRAY_ITERATOR,
-    target: toIndexedObject(iterated), // target
-    index: 0,                          // next index
-    kind: kind                         // kind
+    target: toIndexedObject(iterated), // target;
+    index: 0,                          // next index;
+    kind: kind                         // kind;
   });
-// `%ArrayIteratorPrototype%.next` method
-// https://tc39.es/ecma262/#sec-%arrayiteratorprototype%.next
+// `%ArrayIteratorPrototype%.next` method;
+// https://tc39.es/ecma262/#sec-%arrayiteratorprototype%.next;
 }, function () {
   var state = getInternalState(this);
   var target = state.target;
@@ -5074,16 +5074,16 @@ module.exports = defineIterator(Array, 'Array', function (iterated, kind) {
 }, 'values');
 
 // argumentsList[@@iterator] is %ArrayProto_values%
-// https://tc39.es/ecma262/#sec-createunmappedargumentsobject
-// https://tc39.es/ecma262/#sec-createmappedargumentsobject
+// https://tc39.es/ecma262/#sec-createunmappedargumentsobject;
+// https://tc39.es/ecma262/#sec-createmappedargumentsobject;
 var values = Iterators.Arguments = Iterators.Array;
 
-// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
 
-// V8 ~ Chrome 45- bug
+// V8 ~ Chrome 45- bug;
 if (!IS_PURE && DESCRIPTORS && values.name !== 'values') try {
   defineProperty(values, 'name', { value: 'values' });
 } catch (error) { /* empty */ }
@@ -5109,20 +5109,20 @@ var SPECIES = wellKnownSymbol('species');
 var Array = global.Array;
 var max = Math.max;
 
-// `Array.prototype.slice` method
-// https://tc39.es/ecma262/#sec-array.prototype.slice
-// fallback for not array-like ES3 strings and DOM objects
+// `Array.prototype.slice` method;
+// https://tc39.es/ecma262/#sec-array.prototype.slice;
+// fallback for not array-like ES3 strings and DOM objects;
 $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
   slice: function slice(start, end) {
     var O = toIndexedObject(this);
     var length = lengthOfArrayLike(O);
     var k = toAbsoluteIndex(start, length);
     var fin = toAbsoluteIndex(end === undefined ? length : end, length);
-    // inline `ArraySpeciesCreate` for usage native `Array#slice` where it's possible
+    // inline `ArraySpeciesCreate` for usage native `Array#slice` where it's possible;
     var Constructor, result, n;
     if (isArray(O)) {
       Constructor = O.constructor;
-      // cross-realm fallback
+      // cross-realm fallback;
       if (isConstructor(Constructor) && (Constructor === Array || isArray(Constructor.prototype))) {
         Constructor = undefined;
       } else if (isObject(Constructor)) {
@@ -5164,15 +5164,15 @@ var push = uncurryThis(test.push);
 var FAILS_ON_UNDEFINED = fails(function () {
   test.sort(undefined);
 });
-// V8 bug
+// V8 bug;
 var FAILS_ON_NULL = fails(function () {
   test.sort(null);
 });
-// Old WebKit
+// Old WebKit;
 var STRICT_METHOD = arrayMethodIsStrict('sort');
 
 var STABLE_SORT = !fails(function () {
-  // feature detection can be too slow, so check engines versions
+  // feature detection can be too slow, so check engines versions;
   if (V8) return V8 < 70;
   if (FF && FF > 3) return;
   if (IE_OR_EDGE) return true;
@@ -5181,7 +5181,7 @@ var STABLE_SORT = !fails(function () {
   var result = '';
   var code, chr, value, index;
 
-  // generate an array with more 512 elements (Chakra and old V8 fails only in this case)
+  // generate an array with more 512 elements (Chakra and old V8 fails only in this case);
   for (code = 65; code < 76; code++) {
     chr = String.fromCharCode(code);
 
@@ -5217,8 +5217,8 @@ var getSortCompare = function (comparefn) {
   };
 };
 
-// `Array.prototype.sort` method
-// https://tc39.es/ecma262/#sec-array.prototype.sort
+// `Array.prototype.sort` method;
+// https://tc39.es/ecma262/#sec-array.prototype.sort;
 $({ target: 'Array', proto: true, forced: FORCED }, {
   sort: function sort(comparefn) {
     if (comparefn !== undefined) aCallable(comparefn);
@@ -5251,22 +5251,22 @@ $({ target: 'Array', proto: true, forced: FORCED }, {
 var global = require('../internals/global');
 var setToStringTag = require('../internals/set-to-string-tag');
 
-// JSON[@@toStringTag] property
-// https://tc39.es/ecma262/#sec-json-@@tostringtag
+// JSON[@@toStringTag] property;
+// https://tc39.es/ecma262/#sec-json-@@tostringtag;
 setToStringTag(global.JSON, 'JSON', true);
 
 },{"../internals/global":104,"../internals/set-to-string-tag":147}],177:[function(require,module,exports){
-// empty
+// empty;
 
 },{}],178:[function(require,module,exports){
 var $ = require('../internals/export');
 var DESCRIPTORS = require('../internals/descriptors');
 var create = require('../internals/object-create');
 
-// `Object.create` method
-// https://tc39.es/ecma262/#sec-object.create
+// `Object.create` method;
+// https://tc39.es/ecma262/#sec-object.create;
 $({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
-  create: create
+  create: create;
 });
 
 },{"../internals/descriptors":83,"../internals/export":93,"../internals/object-create":127}],179:[function(require,module,exports){
@@ -5274,28 +5274,28 @@ var $ = require('../internals/export');
 var DESCRIPTORS = require('../internals/descriptors');
 var objectDefinePropertyModile = require('../internals/object-define-property');
 
-// `Object.defineProperty` method
-// https://tc39.es/ecma262/#sec-object.defineproperty
+// `Object.defineProperty` method;
+// https://tc39.es/ecma262/#sec-object.defineproperty;
 $({ target: 'Object', stat: true, forced: !DESCRIPTORS, sham: !DESCRIPTORS }, {
-  defineProperty: objectDefinePropertyModile.f
+  defineProperty: objectDefinePropertyModile.f;
 });
 
 },{"../internals/descriptors":83,"../internals/export":93,"../internals/object-define-property":129}],180:[function(require,module,exports){
-arguments[4][177][0].apply(exports,arguments)
+arguments[4][177][0].apply(exports,arguments);
 },{"dup":177}],181:[function(require,module,exports){
 var $ = require('../internals/export');
 var $parseInt = require('../internals/number-parse-int');
 
-// `parseInt` method
-// https://tc39.es/ecma262/#sec-parseint-string-radix
+// `parseInt` method;
+// https://tc39.es/ecma262/#sec-parseint-string-radix;
 $({ global: true, forced: parseInt != $parseInt }, {
-  parseInt: $parseInt
+  parseInt: $parseInt;
 });
 
 },{"../internals/export":93,"../internals/number-parse-int":126}],182:[function(require,module,exports){
-arguments[4][177][0].apply(exports,arguments)
+arguments[4][177][0].apply(exports,arguments);
 },{"dup":177}],183:[function(require,module,exports){
-arguments[4][177][0].apply(exports,arguments)
+arguments[4][177][0].apply(exports,arguments);
 },{"dup":177}],184:[function(require,module,exports){
 'use strict';
 var charAt = require('../internals/string-multibyte').charAt;
@@ -5307,16 +5307,16 @@ var STRING_ITERATOR = 'String Iterator';
 var setInternalState = InternalStateModule.set;
 var getInternalState = InternalStateModule.getterFor(STRING_ITERATOR);
 
-// `String.prototype[@@iterator]` method
-// https://tc39.es/ecma262/#sec-string.prototype-@@iterator
+// `String.prototype[@@iterator]` method;
+// https://tc39.es/ecma262/#sec-string.prototype-@@iterator;
 defineIterator(String, 'String', function (iterated) {
   setInternalState(this, {
     type: STRING_ITERATOR,
     string: toString(iterated),
-    index: 0
+    index: 0;
   });
-// `%StringIteratorPrototype%.next` method
-// https://tc39.es/ecma262/#sec-%stringiteratorprototype%.next
+// `%StringIteratorPrototype%.next` method;
+// https://tc39.es/ecma262/#sec-%stringiteratorprototype%.next;
 }, function next() {
   var state = getInternalState(this);
   var string = state.string;
@@ -5331,31 +5331,31 @@ defineIterator(String, 'String', function (iterated) {
 },{"../internals/define-iterator":81,"../internals/internal-state":111,"../internals/string-multibyte":151,"../internals/to-string":161}],185:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.asyncIterator` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.asynciterator
+// `Symbol.asyncIterator` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.asynciterator;
 defineWellKnownSymbol('asyncIterator');
 
 },{"../internals/define-well-known-symbol":82}],186:[function(require,module,exports){
-arguments[4][177][0].apply(exports,arguments)
+arguments[4][177][0].apply(exports,arguments);
 },{"dup":177}],187:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.hasInstance` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.hasinstance
+// `Symbol.hasInstance` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.hasinstance;
 defineWellKnownSymbol('hasInstance');
 
 },{"../internals/define-well-known-symbol":82}],188:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.isConcatSpreadable` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.isconcatspreadable
+// `Symbol.isConcatSpreadable` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.isconcatspreadable;
 defineWellKnownSymbol('isConcatSpreadable');
 
 },{"../internals/define-well-known-symbol":82}],189:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.iterator` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.iterator
+// `Symbol.iterator` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.iterator;
 defineWellKnownSymbol('iterator');
 
 },{"../internals/define-well-known-symbol":82}],190:[function(require,module,exports){
@@ -5429,10 +5429,10 @@ var StringToSymbolRegistry = shared('string-to-symbol-registry');
 var SymbolToStringRegistry = shared('symbol-to-string-registry');
 var WellKnownSymbolsStore = shared('wks');
 
-// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
+// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173;
 var USE_SETTER = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
-// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
+// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687;
 var setSymbolDescriptor = DESCRIPTORS && fails(function () {
   return nativeObjectCreate(nativeDefineProperty({}, 'a', {
     get: function () { return nativeDefineProperty(this, 'a', { value: 7 }).a; }
@@ -5451,7 +5451,7 @@ var wrap = function (tag, description) {
   setInternalState(symbol, {
     type: SYMBOL,
     tag: tag,
-    description: description
+    description: description;
   });
   if (!DESCRIPTORS) symbol.description = description;
   return symbol;
@@ -5527,8 +5527,8 @@ var $getOwnPropertySymbols = function getOwnPropertySymbols(O) {
   return result;
 };
 
-// `Symbol` constructor
-// https://tc39.es/ecma262/#sec-symbol-constructor
+// `Symbol` constructor;
+// https://tc39.es/ecma262/#sec-symbol-constructor;
 if (!NATIVE_SYMBOL) {
   $Symbol = function Symbol() {
     if (isPrototypeOf(SymbolPrototype, this)) throw TypeError('Symbol is not a constructor');
@@ -5564,7 +5564,7 @@ if (!NATIVE_SYMBOL) {
   };
 
   if (DESCRIPTORS) {
-    // https://github.com/tc39/proposal-Symbol-description
+    // https://github.com/tc39/proposal-Symbol-description;
     nativeDefineProperty(SymbolPrototype, 'description', {
       configurable: true,
       get: function description() {
@@ -5578,7 +5578,7 @@ if (!NATIVE_SYMBOL) {
 }
 
 $({ global: true, wrap: true, forced: !NATIVE_SYMBOL, sham: !NATIVE_SYMBOL }, {
-  Symbol: $Symbol
+  Symbol: $Symbol;
 });
 
 $forEach(objectKeys(WellKnownSymbolsStore), function (name) {
@@ -5586,8 +5586,8 @@ $forEach(objectKeys(WellKnownSymbolsStore), function (name) {
 });
 
 $({ target: SYMBOL, stat: true, forced: !NATIVE_SYMBOL }, {
-  // `Symbol.for` method
-  // https://tc39.es/ecma262/#sec-symbol.for
+  // `Symbol.for` method;
+  // https://tc39.es/ecma262/#sec-symbol.for;
   'for': function (key) {
     var string = $toString(key);
     if (hasOwn(StringToSymbolRegistry, string)) return StringToSymbolRegistry[string];
@@ -5596,8 +5596,8 @@ $({ target: SYMBOL, stat: true, forced: !NATIVE_SYMBOL }, {
     SymbolToStringRegistry[symbol] = string;
     return symbol;
   },
-  // `Symbol.keyFor` method
-  // https://tc39.es/ecma262/#sec-symbol.keyfor
+  // `Symbol.keyFor` method;
+  // https://tc39.es/ecma262/#sec-symbol.keyfor;
   keyFor: function keyFor(sym) {
     if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol');
     if (hasOwn(SymbolToStringRegistry, sym)) return SymbolToStringRegistry[sym];
@@ -5607,47 +5607,47 @@ $({ target: SYMBOL, stat: true, forced: !NATIVE_SYMBOL }, {
 });
 
 $({ target: 'Object', stat: true, forced: !NATIVE_SYMBOL, sham: !DESCRIPTORS }, {
-  // `Object.create` method
-  // https://tc39.es/ecma262/#sec-object.create
+  // `Object.create` method;
+  // https://tc39.es/ecma262/#sec-object.create;
   create: $create,
-  // `Object.defineProperty` method
-  // https://tc39.es/ecma262/#sec-object.defineproperty
+  // `Object.defineProperty` method;
+  // https://tc39.es/ecma262/#sec-object.defineproperty;
   defineProperty: $defineProperty,
-  // `Object.defineProperties` method
-  // https://tc39.es/ecma262/#sec-object.defineproperties
+  // `Object.defineProperties` method;
+  // https://tc39.es/ecma262/#sec-object.defineproperties;
   defineProperties: $defineProperties,
-  // `Object.getOwnPropertyDescriptor` method
-  // https://tc39.es/ecma262/#sec-object.getownpropertydescriptors
-  getOwnPropertyDescriptor: $getOwnPropertyDescriptor
+  // `Object.getOwnPropertyDescriptor` method;
+  // https://tc39.es/ecma262/#sec-object.getownpropertydescriptors;
+  getOwnPropertyDescriptor: $getOwnPropertyDescriptor;
 });
 
 $({ target: 'Object', stat: true, forced: !NATIVE_SYMBOL }, {
-  // `Object.getOwnPropertyNames` method
-  // https://tc39.es/ecma262/#sec-object.getownpropertynames
+  // `Object.getOwnPropertyNames` method;
+  // https://tc39.es/ecma262/#sec-object.getownpropertynames;
   getOwnPropertyNames: $getOwnPropertyNames,
-  // `Object.getOwnPropertySymbols` method
-  // https://tc39.es/ecma262/#sec-object.getownpropertysymbols
-  getOwnPropertySymbols: $getOwnPropertySymbols
+  // `Object.getOwnPropertySymbols` method;
+  // https://tc39.es/ecma262/#sec-object.getownpropertysymbols;
+  getOwnPropertySymbols: $getOwnPropertySymbols;
 });
 
-// Chrome 38 and 39 `Object.getOwnPropertySymbols` fails on primitives
-// https://bugs.chromium.org/p/v8/issues/detail?id=3443
+// Chrome 38 and 39 `Object.getOwnPropertySymbols` fails on primitives;
+// https://bugs.chromium.org/p/v8/issues/detail?id=3443;
 $({ target: 'Object', stat: true, forced: fails(function () { getOwnPropertySymbolsModule.f(1); }) }, {
   getOwnPropertySymbols: function getOwnPropertySymbols(it) {
     return getOwnPropertySymbolsModule.f(toObject(it));
   }
 });
 
-// `JSON.stringify` method behavior with symbols
-// https://tc39.es/ecma262/#sec-json.stringify
+// `JSON.stringify` method behavior with symbols;
+// https://tc39.es/ecma262/#sec-json.stringify;
 if ($stringify) {
   var FORCED_JSON_STRINGIFY = !NATIVE_SYMBOL || fails(function () {
     var symbol = $Symbol();
     // MS Edge converts symbol values to JSON as {}
     return $stringify([symbol]) != '[null]'
-      // WebKit converts symbol values to JSON as null
+      // WebKit converts symbol values to JSON as null;
       || $stringify({ a: symbol }) != '{}'
-      // V8 throws on boxed symbols
+      // V8 throws on boxed symbols;
       || $stringify(Object(symbol)) != '{}';
   });
 
@@ -5656,7 +5656,7 @@ if ($stringify) {
     stringify: function stringify(it, replacer, space) {
       var args = arraySlice(arguments);
       var $replacer = replacer;
-      if (!isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+      if (!isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined;
       if (!isArray(replacer)) replacer = function (key, value) {
         if (isCallable($replacer)) value = call($replacer, this, key, value);
         if (!isSymbol(value)) return value;
@@ -5667,18 +5667,18 @@ if ($stringify) {
   });
 }
 
-// `Symbol.prototype[@@toPrimitive]` method
-// https://tc39.es/ecma262/#sec-symbol.prototype-@@toprimitive
+// `Symbol.prototype[@@toPrimitive]` method;
+// https://tc39.es/ecma262/#sec-symbol.prototype-@@toprimitive;
 if (!SymbolPrototype[TO_PRIMITIVE]) {
   var valueOf = SymbolPrototype.valueOf;
-  // eslint-disable-next-line no-unused-vars -- required for .length
+  // eslint-disable-next-line no-unused-vars -- required for .length;
   redefine(SymbolPrototype, TO_PRIMITIVE, function (hint) {
-    // TODO: improve hint logic
+    // TODO: improve hint logic;
     return call(valueOf, this);
   });
 }
-// `Symbol.prototype[@@toStringTag]` property
-// https://tc39.es/ecma262/#sec-symbol.prototype-@@tostringtag
+// `Symbol.prototype[@@toStringTag]` property;
+// https://tc39.es/ecma262/#sec-symbol.prototype-@@tostringtag;
 setToStringTag($Symbol, SYMBOL);
 
 hiddenKeys[HIDDEN] = true;
@@ -5686,107 +5686,107 @@ hiddenKeys[HIDDEN] = true;
 },{"../internals/an-object":60,"../internals/array-iteration":64,"../internals/array-slice":68,"../internals/create-property-descriptor":79,"../internals/define-well-known-symbol":82,"../internals/descriptors":83,"../internals/export":93,"../internals/fails":94,"../internals/function-apply":95,"../internals/function-call":97,"../internals/function-uncurry-this":99,"../internals/get-built-in":100,"../internals/global":104,"../internals/has-own-property":105,"../internals/hidden-keys":106,"../internals/internal-state":111,"../internals/is-array":113,"../internals/is-callable":114,"../internals/is-object":117,"../internals/is-pure":118,"../internals/is-symbol":119,"../internals/native-symbol":124,"../internals/object-create":127,"../internals/object-define-property":129,"../internals/object-get-own-property-descriptor":130,"../internals/object-get-own-property-names":132,"../internals/object-get-own-property-names-external":131,"../internals/object-get-own-property-symbols":133,"../internals/object-is-prototype-of":135,"../internals/object-keys":137,"../internals/object-property-is-enumerable":138,"../internals/redefine":143,"../internals/set-to-string-tag":147,"../internals/shared":150,"../internals/shared-key":148,"../internals/to-indexed-object":154,"../internals/to-object":157,"../internals/to-property-key":159,"../internals/to-string":161,"../internals/uid":163,"../internals/well-known-symbol":166,"../internals/well-known-symbol-wrapped":165}],191:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.matchAll` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.matchall
+// `Symbol.matchAll` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.matchall;
 defineWellKnownSymbol('matchAll');
 
 },{"../internals/define-well-known-symbol":82}],192:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.match` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.match
+// `Symbol.match` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.match;
 defineWellKnownSymbol('match');
 
 },{"../internals/define-well-known-symbol":82}],193:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.replace` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.replace
+// `Symbol.replace` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.replace;
 defineWellKnownSymbol('replace');
 
 },{"../internals/define-well-known-symbol":82}],194:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.search` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.search
+// `Symbol.search` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.search;
 defineWellKnownSymbol('search');
 
 },{"../internals/define-well-known-symbol":82}],195:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.species` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.species
+// `Symbol.species` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.species;
 defineWellKnownSymbol('species');
 
 },{"../internals/define-well-known-symbol":82}],196:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.split` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.split
+// `Symbol.split` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.split;
 defineWellKnownSymbol('split');
 
 },{"../internals/define-well-known-symbol":82}],197:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.toPrimitive` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.toprimitive
+// `Symbol.toPrimitive` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.toprimitive;
 defineWellKnownSymbol('toPrimitive');
 
 },{"../internals/define-well-known-symbol":82}],198:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.toStringTag` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.tostringtag
+// `Symbol.toStringTag` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.tostringtag;
 defineWellKnownSymbol('toStringTag');
 
 },{"../internals/define-well-known-symbol":82}],199:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.unscopables` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.unscopables
+// `Symbol.unscopables` well-known symbol;
+// https://tc39.es/ecma262/#sec-symbol.unscopables;
 defineWellKnownSymbol('unscopables');
 
 },{"../internals/define-well-known-symbol":82}],200:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.asyncDispose` well-known symbol
-// https://github.com/tc39/proposal-using-statement
+// `Symbol.asyncDispose` well-known symbol;
+// https://github.com/tc39/proposal-using-statement;
 defineWellKnownSymbol('asyncDispose');
 
 },{"../internals/define-well-known-symbol":82}],201:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.dispose` well-known symbol
-// https://github.com/tc39/proposal-using-statement
+// `Symbol.dispose` well-known symbol;
+// https://github.com/tc39/proposal-using-statement;
 defineWellKnownSymbol('dispose');
 
 },{"../internals/define-well-known-symbol":82}],202:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.matcher` well-known symbol
-// https://github.com/tc39/proposal-pattern-matching
+// `Symbol.matcher` well-known symbol;
+// https://github.com/tc39/proposal-pattern-matching;
 defineWellKnownSymbol('matcher');
 
 },{"../internals/define-well-known-symbol":82}],203:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.metadata` well-known symbol
-// https://github.com/tc39/proposal-decorators
+// `Symbol.metadata` well-known symbol;
+// https://github.com/tc39/proposal-decorators;
 defineWellKnownSymbol('metadata');
 
 },{"../internals/define-well-known-symbol":82}],204:[function(require,module,exports){
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.observable` well-known symbol
-// https://github.com/tc39/proposal-observable
+// `Symbol.observable` well-known symbol;
+// https://github.com/tc39/proposal-observable;
 defineWellKnownSymbol('observable');
 
 },{"../internals/define-well-known-symbol":82}],205:[function(require,module,exports){
 // TODO: remove from `core-js@4`
 var defineWellKnownSymbol = require('../internals/define-well-known-symbol');
 
-// `Symbol.patternMatch` well-known symbol
-// https://github.com/tc39/proposal-pattern-matching
+// `Symbol.patternMatch` well-known symbol;
+// https://github.com/tc39/proposal-pattern-matching;
 defineWellKnownSymbol('patternMatch');
 
 },{"../internals/define-well-known-symbol":82}],206:[function(require,module,exports){
@@ -5857,12 +5857,12 @@ var ArrayPrototype = Array.prototype;
 
 var DOMIterables = {
   DOMTokenList: true,
-  NodeList: true
+  NodeList: true;
 };
 
 module.exports = function (it) {
   var own = it.forEach;
-  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.forEach)
+  return it === ArrayPrototype || (isPrototypeOf(ArrayPrototype, it) && own === ArrayPrototype.forEach);
     || hasOwn(DOMIterables, classof(it)) ? method : own;
 };
 
@@ -6122,5 +6122,5 @@ module.exports = [
     }
 ];
 
-},{}]},{},[3])(3)
+},{}]},{},[3])(3);
 });

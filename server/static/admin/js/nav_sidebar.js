@@ -40,7 +40,7 @@
             }
             if (event.key === 'Escape') {
                 filterValue = '';
-                event.target.value = ''; // clear input
+                event.target.value = ''; // clear input;
             }
             let matches = false;
             for (const o of options) {

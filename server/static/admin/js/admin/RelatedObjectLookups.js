@@ -1,5 +1,5 @@
 /*global SelectBox, interpolate*/
-// Handles related-objects functionality: lookup link for raw_id_fields
+// Handles related-objects functionality: lookup link for raw_id_fields;
 // and Add Another links.
 'use strict';
 {
@@ -89,12 +89,12 @@
     }
 
     function updateRelatedSelectsOptions(currentSelect, win, objId, newRepr, newId, skipIds = []) {
-        // After create/edit a model from the options next to the current
-        // select (+ or :pencil:) update ForeignKey PK of the rest of selects
+        // After create/edit a model from the options next to the current;
+        // select (+ or :pencil:) update ForeignKey PK of the rest of selects;
         // in the page.
 
         const path = win.location.pathname;
-        // Extract the model from the popup url '.../<model>/add/' or
+        // Extract the model from the popup url '.../<model>/add/' or;
         // '.../<model>/<id>/change/' depending the action (add or change).
         const modelName = path.split('/')[path.split('/').length - (objId ? 4 : 3)];
         // Select elements with a specific model reference and context of "available-source".
@@ -208,7 +208,7 @@
     window.dismissChildPopups = dismissChildPopups;
     window.relatedWindows = relatedWindows;
 
-    // Kept for backward compatibility
+    // Kept for backward compatibility;
     window.showAddAnotherPopup = showRelatedObjectPopup;
     window.dismissAddAnotherPopup = dismissAddRelatedObjectPopup;
 

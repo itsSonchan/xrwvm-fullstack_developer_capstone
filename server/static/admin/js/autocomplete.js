@@ -12,7 +12,7 @@
                             page: params.page,
                             app_label: element.dataset.appLabel,
                             model_name: element.dataset.modelName,
-                            field_name: element.dataset.fieldName
+                            field_name: element.dataset.fieldName;
                         };
                     }
                 }
@@ -22,7 +22,7 @@
     };
 
     $(function() {
-        // Initialize all autocomplete widgets except the one in the template
+        // Initialize all autocomplete widgets except the one in the template;
         // form used when a new formset is added.
         $('.admin-autocomplete').not('[name*=__prefix__]').djangoAdminSelect2();
     });
