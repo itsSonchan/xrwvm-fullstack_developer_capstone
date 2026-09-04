@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
     - name: Checkout Repository
       uses: actions/checkout@v3
     
@@ -26,34 +25,30 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8
 
-    - name: Print working directory
-      run: pwd
-
-    - name: Run Linter
+    - name: Run Python Linter
       run: |
-        pwd
-        # Run flake8 while ignoring line length (E501), whitespace formatting, and auto-generated migrations
-        find . -name "*.py" -not -path "*/.*" -not -path "*/migrations/*" -not -path "*/venv/*" -exec flake8 --ignore=E501,E231,E225,E302,E303,W291,W292,W293,E117,E265,E251 --max-line-length=120 {} +
+        # Python find command goes HERE in the python job
+        find . -name "*.py" -not -path "*/.*" -not -path "*/migrations/*" -exec python -m flake8 {} +
         echo "Linted all the python files successfully"
 
   lint_js:
-      name: Lint JavaScript Files
-      runs-on: ubuntu-latest
+    name: Lint JavaScript Files
+    runs-on: ubuntu-latest
 
-      steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
 
-      - name: Install JSHint
-        run: npm install jshint --global
+    - name: Install JSHint
+      run: npm install jshint --global
 
-      - name: Run Linter
-        run: |
-          pwd
-          find . -name "*.py" -not -path "*/.*" -not -path "*/migrations/*" -exec flake8 {} +
-          echo "Linted all the python files successfully"
+    - name: Run JS Linter
+      run: |
+        # JSHint find command goes HERE in the JS job
+        find ./server/database -name "*.js" -not -path "*/node_modules/*" -not -path "*/static/*" -exec jshint {} +
+        echo "Linted all the js files successfully"
