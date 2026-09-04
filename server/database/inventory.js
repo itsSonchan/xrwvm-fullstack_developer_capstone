@@ -6,27 +6,27 @@ const Schema = mongoose.Schema;
 const cars = new Schema({
 dealer_id: {
     type: Number,
-    required: true;
+    required: true
 },
 make: {
     type: String,
-    required: true;
+    required: true
   },
 model: {
     type: String,
-    required: true;
+    required: true
   },
 bodyType: {
     type: String,
-    required: true;
+    required: true
   },
 year: {
     type: Number,
-    required: true;
+    required: true
   },
 mileage: {
     type: Number,
-    required: true;
+    required: true
   }
 });
 

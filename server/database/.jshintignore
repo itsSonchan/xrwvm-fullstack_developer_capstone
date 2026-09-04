@@ -1,0 +1,6 @@
+node_modules/
+server/database/node_modules/
+server/static/
+**/static/js/
+build/
+dist/
