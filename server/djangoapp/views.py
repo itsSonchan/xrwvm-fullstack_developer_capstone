@@ -1,12 +1,10 @@
 # Uncomment the required imports before adding the code
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
-from datetime import datetime
 from .models import CarMake, CarModel
 
 from django.http import JsonResponse
@@ -75,7 +73,7 @@ def registration(request):
         # Check if user already exists
         User.objects.get(username=username)
         username_exist = True
-    except:
+    except Exception as e:
         # If not, simply log this is a new user
         logger.debug("{} is new user".format(username))
 
@@ -136,7 +134,7 @@ def add_review(request):
         try:
             response = post_review(data)
             return JsonResponse({"status":200})
-        except:
+        except Exception as e:
             return JsonResponse({"status":401, "message":"Error in posting review"})
     else:
         return JsonResponse({"status":403, "message":"Unauthorized"})
